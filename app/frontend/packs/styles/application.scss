@@ -1,0 +1,27 @@
+:root {
+  --r2h-red: #FF4E29;
+  --r2h-blue: #0D53A8;
+  --r2h-yellow: #FFAE46;
+  --r2h-grey: #CECDD6;
+}
+
+h1 {
+  color: var(--r2h-grey);
+}
+h2 {
+  color: var(--r2h-grey);
+}
+ p {
+   color: var(--r2h-grey);
+}
+
+.centered-card {
+  max-width: 900px;
+}
+.img-logo {
+  max-height: 60px;
+  min-height: 40px;
+}
+
+// Import Bootstrap v5
+@import "~bootstrap/scss/bootstrap";
