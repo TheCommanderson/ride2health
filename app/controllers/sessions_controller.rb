@@ -19,19 +19,17 @@ class SessionsController < ApplicationController
   def new; end
 
   def create
-    @login_type = params[:login_type]
+    type = params[:login_type]
 
     case @login_type
-    when 'Admin'
-      @user = Admin.where(email: params[:email])[0]
-    when 'Patient'
-      @user = Patient.where(email: params[:email])[0]
-    when 'Driver'
-      @user = Driver.where(email: params[:email])[0]
+    when 'p'
+      @user = Patient.find_by(email: params[:email])
+    when 'v'
+      @user = User.where(email: params[:email]).ne(_type: 'Patient').first
     end
     if @user&.authenticate(params[:password])
       session[:user_id] = @user._id
-      session[:login_type] = @login_type[0]
+      session[:login_type] = @user._type[0]
     else
       flash.notice = 'Incorrect Email or Password.'
     end

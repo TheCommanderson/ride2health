@@ -5,18 +5,29 @@
   --r2h-grey: #CECDD6;
 }
 
+body {
+  color: var(--r2h-grey);
+}
+label {
+  color: var(--r2h-grey);
+}
 h1 {
   color: var(--r2h-grey);
 }
 h2 {
   color: var(--r2h-grey);
 }
- p {
-   color: var(--r2h-grey);
+p {
+  color: var(--r2h-grey);
 }
 
+.welcome-bg {
+  background-image: url("~images/welcome.png");
+  background-size: cover;
+  height: 100vh;
+}
 .centered-card {
-  max-width: 900px;
+  max-width: 900px !important;
 }
 .img-logo {
   max-height: 60px;

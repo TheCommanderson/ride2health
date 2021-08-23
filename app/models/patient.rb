@@ -3,7 +3,7 @@
 class Patient < User
   include Mongoid::Document
 
-  field :approved, type: Boolean
+  field :approved, type: Boolean, default: false
 
   validates_presence_of :approved
 

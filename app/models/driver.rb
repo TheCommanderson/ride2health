@@ -4,7 +4,7 @@ class Driver < User
   include Mongoid::Document
 
   # Has the driver been trained?
-  field :trained, type: Boolean
+  field :trained, type: Boolean, default: false
   # Driver's car information
   field :car_make, type: String
   field :car_model, type: String

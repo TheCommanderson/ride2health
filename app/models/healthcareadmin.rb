@@ -6,7 +6,7 @@ class Healthcareadmin < User
   # The healthcare org that this healthcare admin belongs to
   field :host_org, type: String
   # Volunteers must be approved to login
-  field :approved, type: Boolean
+  field :approved, type: Boolean, default: false  
 
   validates_presence_of :approved
 

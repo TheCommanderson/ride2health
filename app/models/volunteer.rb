@@ -5,7 +5,7 @@ class Volunteer < User
   include ActiveModel::SecurePassword
 
   # Volunteers must be approved to login
-  field :approved, type: Boolean
+  field :approved, type: Boolean, default: false
 
   validates_presence_of :approved
 
