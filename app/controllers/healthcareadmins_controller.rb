@@ -66,6 +66,6 @@ class HealthcareadminsController < UsersController
 
   # Only allow a list of trusted parameters through.
   def healthcareadmin_params
-    params.fetch(:healthcareadmin, {})
+    params.require(:healthcareadmin).permit(:first_name, :middle_init, :last_name, :phone, :email, :password, :host_org)
   end
 end

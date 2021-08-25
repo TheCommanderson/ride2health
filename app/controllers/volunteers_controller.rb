@@ -23,9 +23,11 @@ class VolunteersController < UsersController
   # POST /volunteers or /volunteers.json
   def create
     @volunteer = Volunteer.new(volunteer_params)
-
     respond_to do |format|
-      if @volunteer.save
+      if params[:volunteer][:password] != params[:volunteer][:retype_password]
+        flash[:danger] "Passwords do not match."
+        format.html { redirect_to new_volunteer_path}
+      elsif @volunteer.save
         format.html { redirect_to @volunteer, notice: 'volunteer was successfully created.' }
         format.json { render :show, status: :created, location: @volunteer }
       else
@@ -66,6 +68,6 @@ class VolunteersController < UsersController
 
   # Only allow a list of trusted parameters through.
   def volunteer_params
-    params.fetch(:volunteer, {})
+    params.require(:volunteer).permit(:first_name, :middle_init, :last_name, :phone, :email, :password)
   end
 end
