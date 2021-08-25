@@ -8,11 +8,12 @@ class Driver < User
   # Driver's car information
   field :car_make, type: String
   field :car_model, type: String
+  field :car_color, type: String
   field :car_license_plate, type: String
   # If a driver declines an appt, this appt ID is entered into a blacklist to
   # prevent this driver from being reassigned the appointment
   field :blacklist, type: Array, default: []
-  field :keep_schedule, type: Boolean, deafult: false
+  field :keep_schedule, type: Boolean, default: false
 
   # Embeds
   # A driver will have exactly 2 schedules, since they are able to set their

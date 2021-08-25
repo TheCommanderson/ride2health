@@ -20,4 +20,3 @@ $(document).on('turbolinks:load', function () {
   var selector = $('.phone-form');
   im.mask(selector);
 });
-$.jMaskGlobals.watchDataMask = true

@@ -3,12 +3,18 @@
 Rails.application.routes.draw do
   root to: 'sessions#index'
 
+  # KEEP SORTED #
+  resources :admins
+  resources :drivers
+  resources :healthcareadmins
+  resources :patients
   resources :sessions, only: %i[index new create] do
     collection do
       get 'about'
       get 'involved'
     end
   end
+  resources :volunteers
 
   resources :patients
 end

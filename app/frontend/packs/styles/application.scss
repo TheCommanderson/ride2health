@@ -5,7 +5,7 @@
   --r2h-grey: #CECDD6;
 }
 
-body, label, h1, h2, p, small {
+body, label, h1, h2, p, small, td, th {
   color: var(--r2h-grey);
 }
 
@@ -19,7 +19,12 @@ body, label, h1, h2, p, small {
 .welcome-bg {
   background-image: url("~images/welcome.png");
   background-size: cover;
-  height: 100vh;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+.stylish-outline {
+  outline: 2px solid var(--r2h-grey);
+  border-radius: 10px 5px;
 }
 
 // Import Bootstrap v5

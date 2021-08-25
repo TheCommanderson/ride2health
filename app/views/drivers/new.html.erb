@@ -5,13 +5,13 @@
         <div class="row p-lg-5 bg-dark rounded">
           <h1 class="text-center">Sign Up</h1>
           <small class="text-center">welcome!</small>
-          <%= form_with(model: @patient, local: true) do |form| %>
-          <% if @patient.errors.any? %>
+          <%= form_with(model: @driver, local: true) do |form| %>
+          <% if @driver.errors.any? %>
             <div class="alert alert-danger" role="alert">
-              <h2><%= pluralize(@patient.errors.count, "error") %>
-                prohibited this @patient from being saved:</h2>
+              <h2><%= pluralize(@driver.errors.count, "error") %>
+                prohibited this @driver from being saved:</h2>
               <ul>
-                <% @patient.errors.full_messages.each do |message| %>
+                <% @driver.errors.full_messages.each do |message| %>
                   <li><%= message %></li>
                 <% end %>
               </ul>
@@ -61,15 +61,34 @@
             </small>
           </div>
 
-          <div class="text-center py-4">
-            <%= form.submit "Submit",class:"btn btn-outline-light big-btn" %>
+          <div class="row py-5">
+            <p>Car Information</p>
+            <div class="form-group col-md">
+              <%= form.label :car_make %>
+              <%= form.text_field :car_make, class: "form-control", placeholder: "Toyota" %>
+            </div>
+            <div class="form-group col-md">
+              <%= form.label :car_model %>
+              <%= form.text_field :car_model, class: "form-control", placeholder: "Corolla" %>
+            </div>
+            <div class="form-group col-md">
+              <%= form.label :car_color %>
+              <%= form.text_field :car_color, class: "form-control", placeholder: "Green" %>
+            </div>
+            <div class="form-group col-md">
+              <%= form.label :car_license_plate %>
+              <%= form.text_field :car_license_plate, class: "form-control", placeholder: "xxx xxx" %>
+            </div>
+
+            <div class="text-center py-4">
+              <%= form.submit "Submit",class:"btn btn-outline-light big-btn" %>
+            </div>
+          <% end %>
+          <div class="text-center pb-3">
+            <%= button_to 'Back', involved_sessions_path, method: 'get', class: "btn btn-light big-btn" %>
           </div>
-        <% end %>
-        <div class="text-center pb-3">
-          <%= button_to 'Back', root_path, method: 'get', class: "btn btn-light big-btn" %>
         </div>
-      </div>
-    </form>
-  </main>
-</div>
+      </form>
+    </main>
+  </div>
 </body>

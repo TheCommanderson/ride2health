@@ -2,22 +2,15 @@
 <body>
   <div class="bg-image welcome-bg">
     <% content_for :navbar do %>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarContent">
-        <ul class="navbar-nav mr-auto">
-          <li class="nav-item mx-2 mt-1">
-            <%= button_to 'About', about_sessions_path, method: "get", class:"btn btn-outline-light" %>
-          </li>
-          <li class="nav-item mx-2 mt-1">
-            <%= button_to 'Get Involved', involved_sessions_path, method: "get", class:"btn btn-outline-light" %>
-          </li>
-          <li class="nav-item mx-2 mt-1">
-            <%= button_to 'Volunteer Login', new_session_path, method: "get", params: {login_type:'v'}, class:"btn btn-outline-light" %>
-          </li>
-        </ul>
-      </div>
+      <li class="nav-item mx-2 mt-1">
+        <%= button_to 'About', about_sessions_path, method: "get", class:"btn btn-outline-light" %>
+      </li>
+      <li class="nav-item mx-2 mt-1">
+        <%= button_to 'Get Involved', involved_sessions_path, method: "get", class:"btn btn-outline-light" %>
+      </li>
+      <li class="nav-item mx-2 mt-1">
+        <%= button_to 'Volunteer Login', new_session_path, method: "get", params: {login_type:'v'}, class:"btn btn-outline-light" %>
+      </li>
     <% end %>
 
     <main>

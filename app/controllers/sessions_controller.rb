@@ -1,8 +1,9 @@
 # frozen_string_literal: true
 
 class SessionsController < ApplicationController
-  skip_before_action :authorized, only: %i[index create new]
+  skip_before_action :authorized
 
+  # GET /sessions.json
   def index
     if logged_in?
       case session[:login_type]
@@ -16,8 +17,10 @@ class SessionsController < ApplicationController
     end
   end
 
+  # GET /sessions/new
   def new; end
 
+  # POST /sessions.json
   def create
     type = params[:login_type]
 
@@ -35,4 +38,10 @@ class SessionsController < ApplicationController
     end
     redirect_to root_url
   end
+
+  # GET /sessions/about
+  def about; end
+
+  # GET /sessions/involved
+  def involved; end
 end
