@@ -2,57 +2,57 @@
 
 class UsersController < ApplicationController
   skip_before_action :authorized, only: %i[create new]
-  before_action :set_thing, only: %i[show edit update destroy]
+  before_action :set_user, only: %i[show edit update destroy]
 
-  # GET /things or /things.json
+  # GET /users or /users.json
   def index
-    @things = Thing.all
+    @users = user.all
   end
 
-  # GET /things/1 or /things/1.json
+  # GET /users/1 or /users/1.json
   def show; end
 
-  # GET /things/new
+  # GET /users/new
   def new
-    @thing = Thing.new
+    @user = user.new
   end
 
-  # GET /things/1/edit
+  # GET /users/1/edit
   def edit; end
 
-  # POST /things or /things.json
+  # POST /users or /users.json
   def create
-    @thing = Thing.new(thing_params)
+    @user = user.new(user_params)
 
     respond_to do |format|
-      if @thing.save
-        format.html { redirect_to @thing, notice: 'Thing was successfully created.' }
-        format.json { render :show, status: :created, location: @thing }
+      if @user.save
+        format.html { redirect_to @user, notice: 'user was successfully created.' }
+        format.json { render :show, status: :created, location: @user }
       else
         format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @thing.errors, status: :unprocessable_entity }
+        format.json { render json: @user.errors, status: :unprocessable_entity }
       end
     end
   end
 
-  # PATCH/PUT /things/1 or /things/1.json
+  # PATCH/PUT /users/1 or /users/1.json
   def update
     respond_to do |format|
-      if @thing.update(thing_params)
-        format.html { redirect_to @thing, notice: 'Thing was successfully updated.' }
-        format.json { render :show, status: :ok, location: @thing }
+      if @user.update(user_params)
+        format.html { redirect_to @user, notice: 'user was successfully updated.' }
+        format.json { render :show, status: :ok, location: @user }
       else
         format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @thing.errors, status: :unprocessable_entity }
+        format.json { render json: @user.errors, status: :unprocessable_entity }
       end
     end
   end
 
-  # DELETE /things/1 or /things/1.json
+  # DELETE /users/1 or /users/1.json
   def destroy
-    @thing.destroy
+    @user.destroy
     respond_to do |format|
-      format.html { redirect_to things_url, notice: 'Thing was successfully destroyed.' }
+      format.html { redirect_to users_url, notice: 'user was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
@@ -60,12 +60,12 @@ class UsersController < ApplicationController
   private
 
   # Use callbacks to share common setup or constraints between actions.
-  def set_thing
-    @thing = Thing.find(params[:id])
+  def set_user
+    @user = user.find(params[:id])
   end
 
   # Only allow a list of trusted parameters through.
-  def thing_params
-    params.fetch(:thing, {})
+  def user_params
+    params.fetch(:user, {})
   end
 end

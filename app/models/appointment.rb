@@ -37,11 +37,11 @@ class Appointment
 
   # Calls the Google Maps API to retreive the estimated time for this ride.
   def get_est_time
-    url = 'https://maps.googleapis.com/maps/api/directions/json?origin='\
-      location[0].coordinates[0].to_s + ',' + location[0].coordinates[1].to_s\
-      '&destination=' + location[1].coordinates[0].to_s + ','\
-      location[1].coordinates[1].to_s + '&key='\
-      Rails.application.credentials.gmap_geocode_api_kep
+    url = "https://maps.googleapis.com/maps/api/directions/json?origin=\
+      #{location[0].coordinates[0].to_s},#{location[0].coordinates[1].to_s}\
+      &destination=#{location[1].coordinates[0].to_s},\
+      #{location[1].coordinates[1].to_s}&key=\
+      #{Rails.application.credentials.gmap_geocode_api_kep}"
     response = HTTParty.get(url).parsed_response
     self.est_time = ((response['routes'].first['legs'].first['duration']['value']) / 60).round + BUFFER_TIME
   end

@@ -1,12 +1,13 @@
 <body>
   <div class="jumbotron welcome-bg">
     <main>
-      <section class="p-4 text-center container centered-card">
+      <form class="p-4 container centered-card">
         <div class="row p-lg-5 bg-dark rounded">
-          <h1>Sign Up</h1>
+          <h1 class="text-center">Sign Up</h1>
+          <small class="text-center">welcome!</small>
           <%= form_with(model: @patient, local: true) do |form| %>
           <% if @patient.errors.any? %>
-            <div id="error_explanation">
+            <div class="alert alert-danger" role="alert">
               <h2><%= pluralize(@patient.errors.count, "error") %>
                 prohibited this @patient from being saved:</h2>
               <ul>
@@ -17,83 +18,58 @@
             </div>
           <% end %>
 
-          <div class="row">
-            <div class="col">
-              <div class="text-right">
-                <%= form.label :first_name %>
-              </div>
+          <div class="row py-2">
+            <div class="form-group col-md">
+              <%= form.label :first_name %>
+              <%= form.text_field :first_name, class: "form-control", autofocus: true %>
             </div>
-            <div class="col">
-              <%= form.text_field :first_name %>
+
+            <div class="form-group col-md-1">
+              <%= form.label 'Middle' %>
+              <%= form.text_field :middle_init, class: "form-control" %>
+            </div>
+
+            <div class="form-group col-md">
+              <%= form.label :last_name %>
+              <%= form.text_field :last_name, class: "form-control" %>
             </div>
           </div>
 
-          <div class="row">
-            <div class="col">
-              <div class="text-right">
-                <%= form.label 'Middle initial' %>
-              </div>
+          <div class="row py-2">
+            <div class="form-group col-md-3">
+              <%= form.label :phone %>
+              <%= form.telephone_field :phone, class: "form-control phone-form", placeholder: '(xxx) xxx xxxx' %>
             </div>
-            <div class="col">
-              <%= form.text_field :middle_init %>
+
+            <div class="form-group col-md">
+              <%= form.label :email %>
+              <%= form.text_field :email, class: "form-control" %>
             </div>
           </div>
 
-          <div class="row">
-            <div class="col">
-              <div class="text-right">
-                <%= form.label :last_name %>
-              </div>
+          <div class="row py-2">
+            <div class="form-group col">
+              <%= form.label :password %>
+              <%= form.password_field :password, class: "form-control" %>
             </div>
-            <div class="col">
-              <%= form.text_field :last_name %>
+            <div class="form-group col">
+              <%= form.label :retype_password %>
+              <%= form.password_field :retype_password, class: "form-control" %>
             </div>
+            <small class="form-text text-muted">
+              Don't share your password with anyone!
+            </small>
           </div>
 
-          <div class="row">
-            <div class="col">
-              <div class="text-right">
-                <%= form.label :phone %>
-              </div>
-            </div>
-            <div class="col">
-              <%= form.number_field :phone %>
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="col">
-              <div class="text-right">
-                <%= form.label :email %>
-              </div>
-            </div>
-            <div class="col">
-              <%= form.text_field :email %>
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="col">
-              <div class="text-right">
-                <%= form.label :password %>
-              </div>
-            </div>
-            <div class="col">
-              <%= form.password_field :password %>
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="col">
-              <div class="text-center">
-                <%= form.submit "Submit",class:"btn btn-primary big-btn" %>
-              </div>
-            </div>
+          <div class="text-center py-3">
+            <%= form.submit "Submit",class:"btn btn-outline-light big-btn" %>
           </div>
         <% end %>
+        <div class="text-center py-2">
+          <%= button_to 'Back', root_url, class: "btn btn-light big-btn" %>
+        </div>
       </div>
-    </section>
-    <%= link_to 'Back', root_url, class: "btn btn-secondary big-btn" %>
+    </form>
   </main>
 </div>
 </body>

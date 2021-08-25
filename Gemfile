@@ -42,6 +42,8 @@ gem 'google-api-client'
 gem 'textmagic-ruby', '~> 2.0'
 # Geo
 gem 'geocoder', '~> 1.6'
+# Frontend stuff
+gem 'jquery-rails', '~> 4.4'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

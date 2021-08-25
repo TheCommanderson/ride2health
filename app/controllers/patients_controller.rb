@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class PatientsController < ApplicationController
+class PatientsController < UsersController
   before_action :set_patient, only: %i[show edit update destroy comment append viewComments defaultAddress saveAddress]
   skip_before_action :authorized, only: %i[new create]
   before_action :patient_authorized, except: %i[new create edit update destroy comment append viewComments]
@@ -34,12 +34,11 @@ class PatientsController < ApplicationController
   # POST /patients.json
   def create
     @patient = Patient.new(patient_params)
-    @patient.approved = false unless @patient.approved
 
     respond_to do |format|
       if @patient.save
-        AdminMailer.with(patient: @patient).new_patient_email.deliver
-        format.html { redirect_to @patient, notice: 'Patient was successfully created.' }
+        # AdminMailer.with(patient: @patient).new_patient_email.deliver
+        format.html { redirect_to @patient, notice: 'User was successfully created.' }
         format.json { render :show, status: :created, location: @patient }
       else
         format.html { render :new }

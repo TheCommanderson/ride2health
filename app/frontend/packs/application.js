@@ -7,8 +7,17 @@ import Rails from "@rails/ujs"
 import Turbolinks from "turbolinks"
 import "channels"
 import '../js/bootstrap_js_files.js'
-
 import Logo from 'images/logo'
+import Jquery from 'jquery'
+import 'jquery-mask-plugin'
+import 'inputmask'
 
 Rails.start()
 Turbolinks.start()
+
+$(document).on('turbolinks:load', function () {
+  var im = new Inputmask('(999) 999 9999');
+  var selector = $('.phone-form');
+  im.mask(selector);
+});
+$.jMaskGlobals.watchDataMask = true

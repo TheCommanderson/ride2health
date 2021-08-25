@@ -11,3 +11,4 @@ class Comment
   # Comments can belong to a patient in the case that a driver/volunteer/admin
   # is making a comment about the patient.
   belongs_to :patient, optional: true
+end
