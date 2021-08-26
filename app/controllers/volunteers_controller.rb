@@ -6,7 +6,9 @@ class VolunteersController < UsersController
 
   # GET /volunteers or /volunteers.json
   def index
-    @volunteers = Volunteer.all
+    @patients = Patient.all.sort_by { |p| [p.approved.to_s, p.first_name] }
+    @drivers = Driver.all.sort_by { |d| [d.trained.to_s, d.first_name] }
+    @appointments = Appointment.all.sort_by { |a| [a.status, a.datetime] }
   end
 
   # GET /volunteers/1 or /volunteers/1.json
@@ -24,15 +26,17 @@ class VolunteersController < UsersController
   def create
     @volunteer = Volunteer.new(volunteer_params)
     respond_to do |format|
-      if params[:volunteer][:password] != params[:volunteer][:retype_password]
-        flash[:danger] "Passwords do not match."
-        format.html { redirect_to new_volunteer_path}
-      elsif @volunteer.save
-        format.html { redirect_to @volunteer, notice: 'volunteer was successfully created.' }
-        format.json { render :show, status: :created, location: @volunteer }
-      else
+      begin
+        if @volunteer.save
+          format.html { redirect_to @volunteer, notice: 'volunteer was successfully created.' }
+          format.json { render :show, status: :created, location: @volunteer }
+        else
+          format.html { render :new, status: :unprocessable_entity }
+          format.json { render json: @volunteer.errors, status: :unprocessable_entity }
+        end
+      rescue ArgumentError
+        flash.now[:danger] = 'Please ensure all fields are filled in.'
         format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @volunteer.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -68,6 +72,6 @@ class VolunteersController < UsersController
 
   # Only allow a list of trusted parameters through.
   def volunteer_params
-    params.require(:volunteer).permit(:first_name, :middle_init, :last_name, :phone, :email, :password)
+    params.require(:volunteer).permit(:first_name, :middle_init, :last_name, :phone, :email, :password, :password_confirmation)
   end
 end

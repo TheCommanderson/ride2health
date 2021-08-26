@@ -12,9 +12,8 @@ Rails.application.routes.draw do
     collection do
       get 'about'
       get 'involved'
+      delete 'logout'
     end
   end
   resources :volunteers
-
-  resources :patients
 end

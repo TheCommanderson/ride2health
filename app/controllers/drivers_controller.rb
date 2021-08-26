@@ -25,12 +25,17 @@ class DriversController < UsersController
     @driver = Driver.new(driver_params)
 
     respond_to do |format|
-      if @driver.save
-        format.html { redirect_to @driver, notice: 'driver was successfully created.' }
-        format.json { render :show, status: :created, location: @driver }
-      else
+      begin
+        if @driver.save
+          format.html { redirect_to @driver, notice: 'driver was successfully created.' }
+          format.json { render :show, status: :created, location: @driver }
+        else
+          format.html { render :new, status: :unprocessable_entity }
+          format.json { render json: @driver.errors, status: :unprocessable_entity }
+        end
+      rescue ArgumentError
+        flash.now[:danger] = 'Please ensure all fields are filled in.'
         format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @driver.errors, status: :unprocessable_entity }
       end
     end
   end

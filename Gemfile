@@ -32,8 +32,6 @@ gem 'bootsnap', '>= 1.4.4', require: false
 # Mongoid and associated gems
 gem 'enumerize', '~> 2.4.0'
 gem 'mongoid', '~> 7.0.5'
-# It's webpacker
-gem 'webpacker', '~> 5.0'
 # Do stuff later
 gem 'activejob', '~> 6.1.4'
 gem 'whenever', '~> 1.0'
@@ -44,6 +42,8 @@ gem 'textmagic-ruby', '~> 2.0'
 gem 'geocoder', '~> 1.6'
 # Frontend stuff
 gem 'jquery-rails', '~> 4.4'
+# Utilities
+gem 'hashie', '~> 4.1'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

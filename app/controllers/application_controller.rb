@@ -13,6 +13,8 @@ class ApplicationController < ActionController::Base
 
   before_action :authorized
 
+  add_flash_types :danger, :info
+
   # =============== HELPER FUNCTIONS ================== #
   # Helper returns current user or nil if not logged in
   def current_user
@@ -24,13 +26,6 @@ class ApplicationController < ActionController::Base
   # Helper to see if someone is logged in
   def logged_in?
     !current_user.nil?
-  end
-
-  # Logout function
-  def logout
-    session.delete(:login_type)
-    session.delete(:user_id)
-    redirect_to root_url, notice: 'Successfully Logged Out'
   end
 
   # Helper function to ensure user is authorized when they try to visit a page

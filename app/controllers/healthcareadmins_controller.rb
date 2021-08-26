@@ -25,12 +25,17 @@ class HealthcareadminsController < UsersController
     @healthcareadmin = Healthcareadmin.new(healthcareadmin_params)
 
     respond_to do |format|
-      if @healthcareadmin.save
-        format.html { redirect_to @healthcareadmin, notice: 'healthcareadmin was successfully created.' }
-        format.json { render :show, status: :created, location: @healthcareadmin }
-      else
+      begin
+        if @healthcareadmin.save
+          format.html { redirect_to @healthcareadmin, notice: 'healthcareadmin was successfully created.' }
+          format.json { render :show, status: :created, location: @healthcareadmin }
+        else
+          format.html { render :new, status: :unprocessable_entity }
+          format.json { render json: @healthcareadmin.errors, status: :unprocessable_entity }
+        end
+      rescue ArgumentError
+        flash.now[:danger] = 'Please ensure all fields are filled in.'
         format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @healthcareadmin.errors, status: :unprocessable_entity }
       end
     end
   end

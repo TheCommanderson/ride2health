@@ -7,36 +7,45 @@ class SessionsController < ApplicationController
   def index
     if logged_in?
       case session[:login_type]
-      when 'P'
-        redirect_to patients_home_url
       when 'D'
-        redirect_to drivers_home_url
-      when 'A'
-        redirect_to admins_home_url
+        redirect_to drivers_url
+      when 'H'
+        redirect_to healthcareadmins_url
+      when 'P'
+        redirect_to patients_url
+      when 'S'
+        redirect_to sysadmins_url
+      when 'V'
+        redirect_to volunteers_url
       end
     end
   end
 
   # GET /sessions/new
-  def new; end
+  def new
+    @login_type = params[:login_type]
+  end
 
   # POST /sessions.json
   def create
     type = params[:login_type]
 
-    case @login_type
+    case type
     when 'p'
-      @user = Patient.find_by(email: params[:email])
+      user = User.where(email: params[:email], _type: 'Patient').first
     when 'v'
-      @user = User.where(email: params[:email]).ne(_type: 'Patient').first
+      user = User.where(email: params[:email]).ne(_type: 'Patient').first
     end
-    if @user&.authenticate(params[:password])
-      session[:user_id] = @user._id
-      session[:login_type] = @user._type[0]
+    if user.present? && user.authenticate(params[:password])
+      # sets up user.id sessions
+      session[:user_id] = user.id
+      session[:login_type] = user._type[0]
+      flash[:info] = "Welcome, #{user.first_name}!"
+      redirect_to root_path
     else
-      flash.notice = 'Incorrect Email or Password.'
+      flash.now[:danger] = 'Invalid email or password'
+      render :new
     end
-    redirect_to root_url
   end
 
   # GET /sessions/about
@@ -44,4 +53,12 @@ class SessionsController < ApplicationController
 
   # GET /sessions/involved
   def involved; end
+
+  # DELETE /sessions
+  def logout
+    session.delete(:login_type)
+    session.delete(:user_id)
+    flash[:info] = 'Successfully logged out.'
+    redirect_to root_url
+  end
 end

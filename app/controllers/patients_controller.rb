@@ -36,13 +36,18 @@ class PatientsController < UsersController
     @patient = Patient.new(patient_params)
 
     respond_to do |format|
-      if @patient.save
-        # AdminMailer.with(patient: @patient).new_patient_email.deliver
-        format.html { redirect_to @patient, notice: 'User was successfully created.' }
-        format.json { render :show, status: :created, location: @patient }
-      else
-        format.html { render :new }
-        format.json { render json: @patient.errors, status: :unprocessable_entity }
+      begin
+        if @patient.save
+          # AdminMailer.with(patient: @patient).new_patient_email.deliver
+          format.html { redirect_to @patient, notice: 'User was successfully created.' }
+          format.json { render :show, status: :created, location: @patient }
+        else
+          format.html { render :new }
+          format.json { render json: @patient.errors, status: :unprocessable_entity }
+        end
+      rescue ArgumentError
+        flash.now[:danger] = 'Please ensure all fields are filled in.'
+        format.html { render :new, status: :unprocessable_entity }
       end
     end
   end

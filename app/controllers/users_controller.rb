@@ -13,17 +13,14 @@ class UsersController < ApplicationController
   def show; end
 
   # GET /users/new
-  def new
-    @user = user.new
-  end
+  def new; end
 
   # GET /users/1/edit
   def edit; end
 
   # POST /users or /users.json
   def create
-    @user = user.new(user_params)
-
+    @user = User.new(user_params)
     respond_to do |format|
       if @user.save
         format.html { redirect_to @user, notice: 'user was successfully created.' }
