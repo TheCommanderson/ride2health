@@ -5,14 +5,30 @@ Rails.application.routes.draw do
 
   # KEEP SORTED #
   resources :admins
-  resources :drivers
+  resources :appointments
+  resources :drivers do
+    member do
+      post 'approval'
+    end
+  end
   resources :healthcareadmins
-  resources :patients
+  resources :patients do
+    member do
+      get 'comment'
+      post 'comment'
+    end
+  end
   resources :sessions, only: %i[index new create] do
     collection do
       get 'about'
       get 'involved'
       delete 'logout'
+    end
+  end
+  resources :users, only: %i[show edit] do
+    member do
+      get 'password'
+      patch 'password'
     end
   end
   resources :volunteers

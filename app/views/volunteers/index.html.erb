@@ -1,4 +1,9 @@
+<%= stylesheet_pack_tag 'styles/user', media: 'all', 'data-turbolinks-track': 'reload' %>
+
 <% content_for :navbar do %>
+  <li class="nav-item mx-2 mt-1">
+    <%= button_to 'My Profile', user_path(current_user), method: "get", class:"btn btn-outline-light" %>
+  </li>
   <li class="nav-item mx-2 mt-1">
     <%= button_to 'Logout', logout_sessions_path, method: "delete", class:"btn btn-outline-light" %>
   </li>
@@ -9,4 +14,114 @@
     Welcome,
     <%= current_user.first_name %>
   </h1>
+</div>
+
+<div class="container table-container">
+  <h3>
+    Drivers
+  </h3>
+  <table class="table">
+    <thead class="table-blue">
+      <tr>
+        <th scope="col">Driver</th>
+        <th scope="col">Approval Info</th>
+        <th scope="col">Trained?</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @drivers.each do |driver| %>
+        <tr>
+          <td scope="row">
+            <div class="container">
+              <div class="row">
+                <%= "#{driver.first_name} #{driver.middle_init} #{driver.last_name}"%>
+              </div>
+              <div class="row">
+                <%= "#{driver.email} | #{driver.phone}"%>
+              </div>
+            </div>
+          </td>
+          <td>
+            <% if driver.sysadmin %>
+              <%= "#{driver.sysadmin.first_name} #{driver.sysadmin.last_name}" %>
+            <% else %>
+              No Administrator is associated with the Driver yet.
+            <% end %>
+          </td>
+          <td>
+            <% if driver.trained %>
+              <span style="color:green">True</span>
+            <% else %>
+              <span style="color:red">False</span>
+            <% end %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+
+<div class="container table-container">
+  <h3>
+    Users
+  </h3>
+  <table class="table">
+    <thead class="table-red">
+      <tr>
+        <th class="text-dark">Patient</th>
+        <th class="text-dark">Approved By</th>
+        <th class="text-dark">Approved?</th>
+        <th class="text-dark">Actions</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% @patients.each do |patient| %>
+        <tr>
+          <td>
+            <div class="container">
+              <div class="row">
+                <%= "#{patient.first_name} #{patient.middle_init} #{patient.last_name}"%>
+              </div>
+              <div class="row">
+                <%= "#{patient.email} | #{patient.phone}"%>
+              </div>
+            </div>
+          </td>
+          <td>
+            <% if patient.healthcareadmin %>
+              <div class="row">
+                <%= "#{driver.healthcareadmin.first_name} #{driver.healthcareadmin.last_name}" %>
+              </div>
+              <div class="row">
+                <%= "#{driver.healthcareadmin.host_org}" %>
+              </div>
+            <% else %>
+              No Healthcare Administrator is associated with this User yet.
+            <% end %>
+          </td>
+          <td>
+            <% if patient.approved %>
+              <span style="color:green">True</span>
+            <% else %>
+              <span style="color:red">False</span>
+            <% end %>
+          </td>
+          <td>
+            <div class="row pb-2">
+              <%= button_to "Reset Password", password_user_path(patient.id), method: :post, data: { confirm: "Are you sure?" }, class: "btn btn-outline-dark" %>
+            </div>
+            <div class="row pb-2">
+              <%= button_to 'Comments', comment_patient_path(patient.id), method: :get, class: "btn btn-outline-dark sm-btn" %>
+            </div>
+            <div class="row">
+              <% if patient.approved %>
+                <%= link_to 'Create New Ride', {action: :new, controller: :appointments, patient_id: patient.id}, method: :get,class: "btn btn-outline-dark" %>
+              <% end %>
+            </div>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
 </div>
