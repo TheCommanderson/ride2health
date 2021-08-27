@@ -1,10 +1,9 @@
 # frozen_string_literal: true
 
 class PatientsController < UsersController
-  before_action :set_patient, only: %i[show edit update destroy comment append viewComments defaultAddress saveAddress]
+  before_action :set_patient, only: %i[show edit update destroy]
   skip_before_action :authorized, only: %i[new create]
-  before_action :patient_authorized, except: %i[new create edit update destroy comment append viewComments]
-  before_action :admin_authorized, only: [:viewComments]
+
   # GET /patients
   def pending; end
 
@@ -13,7 +12,7 @@ class PatientsController < UsersController
     # TODO(spencer) clean this up
     @currentPatient = current_user
     @patients = Patient.all
-    @appointments = Appointment
+    @appointments = Appointment.where('patient_id' => current_user.id).sort_by(&:datetime)
     @drivers = Driver.all
     @dt_format = dt_format
   end
@@ -76,55 +75,6 @@ class PatientsController < UsersController
     end
   end
 
-  def comment; end
-
-  def append
-    p_comment = params[:patient][:comment] + " [Comment by: #{current_user.first_name} #{current_user.last_name}]"
-    @patient.add_to_set(comments: p_comment)
-    @patient.save
-    redirect_to root_path, notice: 'Thank you for your feedback!'
-  end
-
-  def viewComments; end
-
-  def defaultAddress; end
-
-  def saveAddress
-    unless @patient.preset.where({ home: 1 }).empty?
-      @current_default = @patient.preset.where({ home: 1 }).first
-      @preset = @patient.preset.find(@current_default.id)
-      @preset.destroy
-    end
-
-    if params[:type] != 'reset'
-      addr1 = params[:preset][:addr1]
-      addr2 = params[:preset][:addr2]
-      city = params[:preset][:city]
-      state = params[:preset][:state]
-      zip = params[:preset][:zip]
-      name = params[:preset][:name]
-
-      @preset = @patient.preset.build(addr1: addr1, addr2: addr2, city: city, state: state, zip: zip, name: name, home: 1)
-      @preset.save
-      @patient.save
-    end
-
-    redirect_to patients_home_path
-  end
-
-  def self.day_schedules(schedules, day)
-    @sch = []
-    schedules.each do |sch|
-      @sch << SchedulesController.make_readable(sch)[day]
-    end
-
-    num_schedules = @sch.length
-    @sch.reject! { |val| val == 'None' }
-    sorted_day = @sch.sort! { |a, b| a[a.index(':') + 3] <=> b[b.index(':') + 3] }
-
-    sorted_day
-  end
-
   private
 
   # Use callbacks to share common setup or constraints between actions.
@@ -135,13 +85,5 @@ class PatientsController < UsersController
   # Only allow a list of trusted parameters through.
   def patient_params
     params.require(:patient).permit(:first_name, :middle_init, :last_name, :phone, :email, :password)
-  end
-
-  def patient_authorized
-    redirect_to root_url unless session[:login_type] == 'P'
-  end
-
-  def admin_authorized
-    redirect_to root_url unless session[:login_type] == 'A'
   end
 end

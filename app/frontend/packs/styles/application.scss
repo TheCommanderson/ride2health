@@ -19,6 +19,14 @@ html, body {
   background-attachment: fixed;
 }
 
+.btn-xlarge {
+    padding: 18px 28px;
+    font-size: 40px !important; //change this to your desired size
+    line-height: normal;
+    -webkit-border-radius: 8px;
+       -moz-border-radius: 8px;
+            border-radius: 8px;
+}
 .centered-card {
   max-width: 900px !important;
 }
@@ -28,6 +36,13 @@ html, body {
 }
 .text-r2h-grey {
   color: var(--r2h-grey);
+}
+.wonder-btn {
+  border-radius: 15px !important;
+  border-width: thick !important;
+  border-image: linear-gradient(to right,
+     var(--r2h-blue) 33%, var(--r2h-yellow) 33% 66%, var(--r2h-red) 66% 100%) 5 !important;
+  color: var(--r2h-grey) !important;
 }
 
 // Import Bootstrap v5

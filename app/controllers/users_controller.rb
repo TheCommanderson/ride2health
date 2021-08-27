@@ -2,7 +2,7 @@
 
 class UsersController < ApplicationController
   skip_before_action :authorized, only: %i[create new]
-  before_action :set_user, only: %i[show edit update destroy]
+  before_action :set_user, only: %i[show edit update destroy password]
 
   # GET /users or /users.json
   def index
@@ -53,6 +53,8 @@ class UsersController < ApplicationController
       format.json { head :no_content }
     end
   end
+
+  def password; end
 
   private
 

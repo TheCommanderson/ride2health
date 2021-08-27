@@ -1,0 +1,87 @@
+<%= stylesheet_pack_tag 'styles/user', media: 'all', 'data-turbolinks-track': 'reload' %>
+
+<% content_for :navbar do %>
+  <li class="nav-item mx-2 mt-1">
+    <%= button_to 'My Profile', user_path(current_user), method: "get", class:"btn btn-outline-light" %>
+  </li>
+  <li class="nav-item mx-2 mt-1">
+    <%= button_to 'Logout', logout_sessions_path, method: "delete", class:"btn btn-outline-light" %>
+  </li>
+<% end %>
+
+<div class="container table-container pt-3">
+  <h3>
+    Appointments
+  </h3>
+  <% if @appointments.empty? %>
+    <h3 class="text-center">
+      <%= "Looks like you have no upcoming appointments, #{current_user.first_name}" %>
+    </h3>
+  <% else %>
+    <table class="table">
+      <thead class="table-blue">
+        <tr>
+          <th>Driver</th>
+          <th>Pick-up Date & Time</th>
+          <th>Pick-up Location</th>
+          <th>Destination</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <% @appointments.each do |a| %>
+          <% if Time.parse(appointment.datetime).past? %>
+            <% next %><% end %>
+            <tr>
+              <td>
+                <% if a.status.unassigned? %>
+                  <strong style="color:red">Unassigned</strong>
+                <% else %>
+                  <%= "#{a.driver.first_name} #{a.driver.middle_init} #{a.driver.last_name}" %>
+                <% end %>
+              </td>
+              <td>
+                <div class="container">
+                  <div class="row">
+                    <%= Time.parse(a.datetime).strftime("%a %b %d, %Y") %>
+                  </div>
+                  <div class="row">
+                    <%= Time.parse(a.datetime).strftime("%I:%M %p") %>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <div class="row">
+                  <%= appointment.location[0].name %>
+                </div>
+                <div class="row">
+                  <%= appointment.location[0].address %>
+                </div>
+              </td>
+              <td>
+                <div class="row">
+                  <%= appointment.location[1].name %>
+                </div>
+                <div class="row">
+                  <%= appointment.location[1].address %>
+                </div>
+              </td>
+              <td>
+                <div class="row">
+                  <%= button_to 'Details', appointment_path(a), method: :get, class: "btn btn-outline-dark" %>
+                </div>
+                <%= button_to 'Update Date/Time', edit_appointment_path(a), method: :get, class: "btn btn-outline-dark" %>
+                <%= button_to 'Update Pick-up Location', edit_appointment_location_path(a, a.location[0]), method: :get, class: "btn btn-outline-dark" %>
+                <%= button_to 'Update Destination', edit_appointment_location_path(a, a.location[1]), method: :get, class: "btn btn-outline-dark" %>
+                <%= button_to 'Cancel Ride', appointment_path(a), method: :delete , data: { confirm: 'Are you sure?' }, class: "btn btn-danger"%>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    <% end %>
+    <div class="text-center">
+      <%= link_to 'New Ride',{action: :new, controller: :appointments, patient_id: @currentPatient.id}, method: :get, class: "btn btn-dark btn-xlarge wonder-btn" %>
+    </div>
+  </div>

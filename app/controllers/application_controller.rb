@@ -30,7 +30,10 @@ class ApplicationController < ActionController::Base
 
   # Helper function to ensure user is authorized when they try to visit a page
   def authorized
-    redirect_to root_url, notice: 'Please Log In.' unless logged_in?
+    unless logged_in?
+      flash[:info] = 'Please log in.'
+      redirect_to root_url
+    end
   end
 
   # Helper returns the sign of the number provided
