@@ -1,6 +1,9 @@
 body, html {
   background-image: url("~images/r2h-grey.png");
 }
+table {
+  overflow-x: scroll;
+}
 td {
   color: #000;
 }

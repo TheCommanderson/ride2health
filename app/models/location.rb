@@ -15,6 +15,8 @@ class Location
   # Information retrieved by Geocoder
   field :address, type: String
   field :coordinates, type: Array
+  # This field is only used when the location belongs to a patient
+  field :home, type: Boolean, default: false
 
   validates_presence_of :addr1, :city, :state
   validates_length_of :zip, minimum: 5, maximum: 5
@@ -29,9 +31,9 @@ class Location
   protected
 
   def generate_full_address
-    temp_address = "#{addr1} #{addr2}, #{city}, #{state} #{zip}"
-    result = Geocoder.search(temp_address)
-    self.coordinates = result.first.coordinates
-    self.address = result.first.address
+    # temp_address = "#{addr1} #{addr2}, #{city}, #{state} #{zip}"
+    # result = Geocoder.search(temp_address)
+    # self.coordinates = result.first.coordinates
+    # self.address = result.first.address
   end
 end

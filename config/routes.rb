@@ -5,17 +5,21 @@ Rails.application.routes.draw do
 
   # KEEP SORTED #
   resources :admins
-  resources :appointments
+  resources :appointments do
+    resources :locations, only: %i[edit]
+  end
   resources :drivers do
     member do
-      post 'approval'
+      post 'approve'
     end
   end
   resources :healthcareadmins
   resources :patients do
+    resources :locations
+    resources :comments
     member do
-      get 'comment'
-      post 'comment'
+      get 'appointments'
+      post 'approve'
     end
   end
   resources :sessions, only: %i[index new create] do
@@ -28,7 +32,7 @@ Rails.application.routes.draw do
   resources :users, only: %i[show edit] do
     member do
       get 'password'
-      patch 'password'
+      patch 'submit'
     end
   end
   resources :volunteers

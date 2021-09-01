@@ -16,7 +16,7 @@
   </h1>
 </div>
 
-<div class="container table-container">
+<div class="container table-container table-responsive">
   <h3>
     Drivers
   </h3>
@@ -61,7 +61,7 @@
   </table>
 </div>
 
-<div class="container table-container">
+<div class="container table-container table-responsive">
   <h3>
     Users
   </h3>
@@ -91,13 +91,13 @@
           <td>
             <% if patient.healthcareadmin %>
               <div class="row">
-                <%= "#{driver.healthcareadmin.first_name} #{driver.healthcareadmin.last_name}" %>
+                <%= "#{patient.healthcareadmin.first_name} #{patient.healthcareadmin.last_name}" %>
               </div>
               <div class="row">
-                <%= "#{driver.healthcareadmin.host_org}" %>
+                <%= "#{patient.healthcareadmin.host_org}" %>
               </div>
             <% else %>
-              No Healthcare Administrator is associated with this User yet.
+              No Healthcare Administrator is associated with this user yet.
             <% end %>
           </td>
           <td>

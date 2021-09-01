@@ -2,14 +2,14 @@
 
 <% content_for :navbar do %>
   <li class="nav-item mx-2 mt-1">
-    <%= button_to 'My Profile', user_path(current_user), method: "get", class:"btn btn-outline-light" %>
+    <%= button_to 'My Profile', patient_path(current_user.id), method: "get", class:"btn btn-outline-light" %>
   </li>
   <li class="nav-item mx-2 mt-1">
     <%= button_to 'Logout', logout_sessions_path, method: "delete", class:"btn btn-outline-light" %>
   </li>
 <% end %>
 
-<div class="container table-container pt-3">
+<div class="container table-container table-responsive pt-3">
   <h3>
     Appointments
   </h3>
@@ -31,7 +31,7 @@
 
       <tbody>
         <% @appointments.each do |a| %>
-          <% if Time.parse(appointment.datetime).past? %>
+          <% if Time.parse(a.datetime).past? %>
             <% next %><% end %>
             <tr>
               <td>
@@ -53,28 +53,48 @@
               </td>
               <td>
                 <div class="row">
-                  <%= appointment.location[0].name %>
+                  <%= a.locations[0].name %>
                 </div>
                 <div class="row">
-                  <%= appointment.location[0].address %>
-                </div>
-              </td>
-              <td>
-                <div class="row">
-                  <%= appointment.location[1].name %>
+                  <%= a.locations[0].addr1 %>
                 </div>
                 <div class="row">
-                  <%= appointment.location[1].address %>
+                  <%= a.locations[0].addr2 %>
+                </div>
+                <div class="row">
+                  <%= "#{a.locations[0].city}, #{a.locations[0].state}, #{a.locations[0].zip}" %>
                 </div>
               </td>
               <td>
                 <div class="row">
+                  <%= a.locations[1].name %>
+                </div>
+                <div class="row">
+                  <%= a.locations[1].addr1 %>
+                </div>
+                <div class="row">
+                  <%= a.locations[1].addr2 %>
+                </div>
+                <div class="row">
+                  <%= "#{a.locations[1].city}, #{a.locations[1].state}, #{a.locations[1].zip}" %>
+                </div>
+              </td>
+              <td>
+                <div class="row pb-2">
                   <%= button_to 'Details', appointment_path(a), method: :get, class: "btn btn-outline-dark" %>
                 </div>
-                <%= button_to 'Update Date/Time', edit_appointment_path(a), method: :get, class: "btn btn-outline-dark" %>
-                <%= button_to 'Update Pick-up Location', edit_appointment_location_path(a, a.location[0]), method: :get, class: "btn btn-outline-dark" %>
-                <%= button_to 'Update Destination', edit_appointment_location_path(a, a.location[1]), method: :get, class: "btn btn-outline-dark" %>
-                <%= button_to 'Cancel Ride', appointment_path(a), method: :delete , data: { confirm: 'Are you sure?' }, class: "btn btn-danger"%>
+                <div class="row pb-2">
+                  <%= button_to 'Update Date/Time', edit_appointment_path(a), method: :get, class: "btn btn-outline-dark" %>
+                </div>
+                <div class="row pb-2">
+                  <%= button_to 'Update Pick-up Location', edit_appointment_location_path(a, a.locations[0]), method: :get, class: "btn btn-outline-dark" %>
+                </div>
+                <div class="row pb-2">
+                  <%= button_to 'Update Destination', edit_appointment_location_path(a, a.locations[1]), method: :get, class: "btn btn-outline-dark" %>
+                </div>
+                <div class="row pb-2">
+                  <%= button_to 'Cancel Ride', appointment_path(a), method: :delete , data: { confirm: 'Are you sure?' }, class: "btn btn-outline-danger"%>
+                </div>
               </td>
             </tr>
           <% end %>
@@ -82,6 +102,6 @@
       </table>
     <% end %>
     <div class="text-center">
-      <%= link_to 'New Ride',{action: :new, controller: :appointments, patient_id: @currentPatient.id}, method: :get, class: "btn btn-dark btn-xlarge wonder-btn" %>
+      <%= button_to 'New Ride', new_appointment_path, params: {patient_id: current_user.id}, method: :get, class: "btn btn-outline-dark btn-xlarge wonder-btn" %>
     </div>
   </div>

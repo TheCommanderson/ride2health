@@ -9,7 +9,6 @@ import "channels"
 import '../js/bootstrap_js_files.js'
 import Logo from 'images/logo'
 import Jquery from 'jquery'
-import 'jquery-mask-plugin'
 import 'inputmask'
 
 Rails.start()
@@ -18,5 +17,17 @@ Turbolinks.start()
 $(document).on('turbolinks:load', function () {
   var im = new Inputmask('(999) 999 9999');
   var selector = $('.phone-form');
+  im.mask(selector);
+});
+
+$(document).on('turbolinks:load', function () {
+  var im = new Inputmask('99999');
+  var selector = $('.zip-form');
+  im.mask(selector);
+});
+
+$(document).on('turbolinks:load', function () {
+  var im = new Inputmask('AA');
+  var selector = $('.state-form');
   im.mask(selector);
 });

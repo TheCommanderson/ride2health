@@ -41,9 +41,10 @@ class SessionsController < ApplicationController
       session[:user_id] = user.id
       session[:login_type] = user._type[0]
       flash[:info] = "Welcome, #{user.first_name}!"
-      redirect_to root_path
+      redirect_to root_url
     else
       flash.now[:danger] = 'Invalid email or password'
+
       render :new
     end
   end

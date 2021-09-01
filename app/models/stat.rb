@@ -7,6 +7,7 @@ class Stat
   field :rides, type: Integer
   # The number of reports filed this month
   field :reports, type: Integer
+  field :reported_appointments, type: Array, default: true
   # Month and Year
   field :month, type: String
   field :year, type: Integer

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class PatientsController < UsersController
-  before_action :set_patient, only: %i[show edit update destroy]
+  before_action :set_patient, only: %i[show edit update destroy approve appointments]
   skip_before_action :authorized, only: %i[new create]
 
   # GET /patients
@@ -9,17 +9,15 @@ class PatientsController < UsersController
 
   # GET /patients.json
   def index
-    # TODO(spencer) clean this up
-    @currentPatient = current_user
-    @patients = Patient.all
-    @appointments = Appointment.where('patient_id' => current_user.id).sort_by(&:datetime)
+    @appointments = Appointment.where(patient_id: current_user.id).sort_by(&:datetime)
     @drivers = Driver.all
-    @dt_format = dt_format
   end
 
   # GET /patients/1
   # GET /patients/1.json
-  def show; end
+  def show
+    @home = @patient.locations.where(home: true).first unless @patient.locations.where(home: true).empty?
+  end
 
   # GET /patients/new
   def new
@@ -39,7 +37,7 @@ class PatientsController < UsersController
         if @patient.save
           # AdminMailer.with(patient: @patient).new_patient_email.deliver
           format.html { redirect_to @patient, notice: 'User was successfully created.' }
-          format.json { render :show, status: :created, location: @patient }
+          format.json { render :show, status: :created, locations: @patient }
         else
           format.html { render :new }
           format.json { render json: @patient.errors, status: :unprocessable_entity }
@@ -57,7 +55,7 @@ class PatientsController < UsersController
     respond_to do |format|
       if @patient.update(patient_params)
         format.html { redirect_to @patient, notice: 'Update Successful!' }
-        format.json { render :show, status: :ok, location: @patient }
+        format.json { render :show, status: :ok, locations: @patient }
       else
         format.html { render :edit }
         format.json { render json: @patient.errors, status: :unprocessable_entity }
@@ -73,6 +71,22 @@ class PatientsController < UsersController
       format.html { redirect_to patients_url, notice: 'Patient was successfully deleted.' }
       format.json { head :no_content }
     end
+  end
+
+  def approve
+    @patient.update_attribute(:approved, !@patient.approved)
+    if @patient.approved && @patient.update_attribute(:healthcareadmin, current_user)
+      flash[:info] = 'Approved!'
+    elsif !@patient.approved && @patient.unset(:healthcareadmin)
+      flash[:info] = 'Patient unapproved successfully.'
+    else
+      flash[:danger] = 'There was an error unapproving this patient, please try again.'
+    end
+    redirect_to root_url
+  end
+
+  def appointments
+    @appointments = Appointment.where(patient_id: @patient.id).sort_by(&:datetime)
   end
 
   private
