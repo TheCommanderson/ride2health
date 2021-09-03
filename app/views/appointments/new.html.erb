@@ -42,48 +42,49 @@
         <div class="row">
           <div class="col">
             <h2>Pick-Up Location</h2>
-            <%= form.fields_for :locations, @appointment.locations.build do |f| %>
-            <%= f.hidden_field :name, :value => 'tmp' %>
+            <div class="row py-2">
+              <div class="form-group col-md">
+                <%= form.fields_for :locations, @appointment.locations.build do |f| %>
+                <%= f.label :addr1, "Address" %>
+                <%= f.text_field :addr1, value: @preset.nil? ? '' : @preset.addr1, class: "form-control checklist-to" %>
+              </div>
+            </div>
+
+            <div class="row py-2">
+              <div class="form-group col-md">
+                <%= f.label :addr2, "Address (cont.)" %>
+                <%= f.text_field :addr2, placeholder: "(Optional)", value: @preset.nil? ? '' : @preset.addr2, class: "form-control" %>
+              </div>
+            </div>
+
+            <div class="row py-2">
+              <div class="form-group col-md">
+                <%= f.label :city %>
+                <%= f.text_field :city, value: @preset.nil? ? '' : @preset.city, class: "form-control checklist-to" %>
+              </div>
+              <div class="form-group col-md">
+                <%= f.label :state %>
+                <%= f.text_field :state, value: @preset.nil? ? '' : @preset.state, class: "form-control state-form checklist-to" %>
+              </div>
+              <div class="form-group col-md">
+                <%= f.label :zip %>
+                <%= f.number_field :zip, value: @preset.nil? ? '' : @preset.zip, class: "form-control zip-form checklist-to" %>
+              </div>
+            </div>
+
+            <div class="row py-2">
+              <div class="form-group col-md">
+                <%= f.label :name, "Address Nickname" %>
+                <%= f.text_field :name, placeholder: "(Optional)", value: @preset.nil? ? '' : @preset.name, class: "form-control" %>
+              </div>
+            </div>
           <% end %>
-          <div class="row py-2">
-            <div class="form-group col-md">
-              <%= form.fields_for :locations, @appointment.locations.build do |f| %>
-              <%= f.label :addr1, "Address" %>
-              <%= f.text_field :addr1, value: @preset.nil? ? '' : @preset.addr1, class: "form-control checklist-to" %>
-            </div>
-          </div>
-
-          <div class="row py-2">
-            <div class="form-group col-md">
-              <%= f.label :addr2, "Address (cont.)" %>
-              <%= f.text_field :addr2, placeholder: "(Optional)", value: @preset.nil? ? '' : @preset.addr2, class: "form-control" %>
-            </div>
-          </div>
-          <div class="row py-2">
-            <div class="form-group col-md">
-              <%= f.label :city %>
-              <%= f.text_field :city, value: @preset.nil? ? '' : @preset.city, class: "form-control checklist-to" %>
-            </div>
-            <div class="form-group col-md">
-              <%= f.label :state %>
-              <%= f.text_field :state, value: @preset.nil? ? '' : @preset.state, class: "form-control state-form checklist-to" %>
-            </div>
-            <div class="form-group col-md">
-              <%= f.label :zip %>
-              <%= f.number_field :zip, value: @preset.nil? ? '' : @preset.zip, class: "form-control zip-form checklist-to" %>
-            </div>
-          </div>
-
-          <div class="row py-2">
-            <div class="form-group col-md">
-              <%= f.label :name, "Address Nickname" %>
-              <%= f.text_field :name, placeholder: "(Optional)", value: @preset.nil? ? '' : @preset.name, class: "form-control" %>
-            </div>
-          </div>
+        </div>
+        <div class="col">
+          <h2>Destination Location</h2>
+          <%= form.fields_for :locations, @appointment.locations.build do |f| %>
+          <%= f.hidden_field :name, :value => 'tmp' %>
         <% end %>
-      </div>
-      <div class="col">
-        <h2>Destination Location</h2>
         <div class="container table-container table-responsive">
           <table class="table">
             <thead class="table-yellow">
@@ -92,7 +93,7 @@
               <th class="text-dark">Address</th>
             </thead>
             <tbody>
-              <% @patient.locations.where(home: false).each do |l| %>
+              <% @locations.each do |l| %>
                 <tr>
                   <td><input type='radio' name='loc-select-to' class='loc-select-to' value=<%= l.id.to_s %>></td>
                   <td><%= l.name %></td>
@@ -146,39 +147,39 @@
   <div class="row">
     <div class="col">
       <h2>Pick-Up Location</h2>
-      <div class="container table-container table-responsive">
-        <table class="table">
-          <thead class="table-yellow">
-            <th class="text-dark"></th>
-            <th class="text-dark">Name</th>
-            <th class="text-dark">Address</th>
-          </thead>
-          <tbody>
-            <% @patient.locations.where(home: false).each do |l| %>
-              <tr>
-                <td><input type='radio' name='loc-select-from' class='loc-select-from' value=<%= l.id.to_s %>></td>
-                <td><%= l.name %></td>
-                <td>
-                  <div class="container">
-                    <div class="row">
-                      <%= "#{l.addr1} #{l.addr2}" %>
-                    </div>
-                    <div class="row">
-                      <%= "#{l.city} #{l.state} #{l.zip}" %>
-                    </div>
-                  </div>
-                </td>
-              </tr>
-            <% end %>
-          </tbody>
-        </table>
-      </div>
-    </div>
-    <div class="col">
-      <h2>Destination Location</h2>
       <%= form.fields_for :locations, @appointment.locations.build do |f| %>
       <%= f.hidden_field :name, :value => 'tmp' %>
     <% end %>
+    <div class="container table-container table-responsive">
+      <table class="table">
+        <thead class="table-yellow">
+          <th class="text-dark"></th>
+          <th class="text-dark">Name</th>
+          <th class="text-dark">Address</th>
+        </thead>
+        <tbody>
+          <% @locations.each do |l| %>
+            <tr>
+              <td><input type='radio' name='loc-select-from' class='loc-select-from' value=<%= l.id.to_s %>></td>
+              <td><%= l.name %></td>
+              <td>
+                <div class="container">
+                  <div class="row">
+                    <%= "#{l.addr1} #{l.addr2}" %>
+                  </div>
+                  <div class="row">
+                    <%= "#{l.city} #{l.state} #{l.zip}" %>
+                  </div>
+                </div>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="col">
+    <h2>Destination Location</h2>
     <div class="row py-2">
       <div class="form-group col-md">
         <%= form.fields_for :locations, @appointment.locations.build do |f| %>
@@ -225,7 +226,14 @@
 </div>
 
 <center class="py-2">
-<%= button_to "Clear Form", { action: "new"}, :params => {:patient_id => params[:patient_id], :type => "clear"}, method: :get, class: "btn btn-light" %>
+<div class="row">
+<div class="col">
+<%= button_to 'Back', request.headers['HTTP_REFERER'], method: 'get', class: "btn btn-outline-light btn-lg" %>
+</div>
+<div class="col">
+<%= button_to "Clear Form", { action: "new"}, :params => {:patient_id => params[:patient_id], :type => "clear"}, method: :get, class: "btn btn-light btn-lg" %>
+</div>
+</div>
 </center>
 </div>
 </section>

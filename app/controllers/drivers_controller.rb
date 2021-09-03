@@ -2,7 +2,7 @@
 
 class DriversController < UsersController
   skip_before_action :authorized, only: %i[create new]
-  before_action :set_driver, only: %i[show edit update destroy]
+  before_action :set_driver, only: %i[show edit update destroy approve]
 
   # GET /drivers or /drivers.json
   def index
@@ -57,9 +57,21 @@ class DriversController < UsersController
   def destroy
     @driver.destroy
     respond_to do |format|
-      format.html { redirect_to drivers_url, notice: 'driver was successfully destroyed.' }
+      format.html { redirect_to root_url, notice: 'driver was successfully destroyed.' }
       format.json { head :no_content }
     end
+  end
+
+  def approve
+    @driver.update_attribute(:trained, !@driver.trained)
+    if @driver.trained && @driver.update_attribute(:sysadmin, current_user)
+      flash[:info] = 'Approved!'
+    elsif !@driver.trained && @driver.unset(:sysadmin)
+      flash[:info] = 'Driver unapproved successfully.'
+    else
+      flash[:danger] = 'There was an error (un)approving this driver, please try again.'
+    end
+    redirect_to root_url
   end
 
   private
@@ -71,6 +83,18 @@ class DriversController < UsersController
 
   # Only allow a list of trusted parameters through.
   def driver_params
-    params.require(:driver).permit(:first_name, :middle_init, :last_name, :phone, :email, :password, :car_make, :car_model, :car_color, :car_license_plate)
+    params.require(:driver).permit(
+      :first_name,
+      :middle_init,
+      :last_name,
+      :phone,
+      :email,
+      :password,
+      :password_confirmation,
+      :car_make,
+      :car_model,
+      :car_color,
+      :car_license_plate
+    )
   end
 end

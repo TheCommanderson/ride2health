@@ -17,7 +17,6 @@ class Appointment
   # Embeds
   # There will be exactly 2 locations, [0] = pickup, [1] = dropoff
   embeds_many :locations, cascade_callbacks: true
-  validates_associated :locations
   accepts_nested_attributes_for :locations
 
   # Belongs

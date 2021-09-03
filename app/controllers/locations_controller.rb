@@ -1,8 +1,7 @@
 # frozen_string_literal: true
 
 class LocationsController < ApplicationController
-  skip_before_action :authorized, only: %i[create new]
-  before_action :set_location, only: %i[show edit update destroy password]
+  before_action :set_location, only: %i[show]
 
   # GET /locations or /locations.json
   def index
@@ -24,18 +23,26 @@ class LocationsController < ApplicationController
   end
 
   # GET /locations/1/edit
-  def edit; end
+  def edit
+    @appointment = Appointment.find(params[:appointment_id])
+    @location = @appointment.locations.find(params[:id])
+    @patient = Patient.find(@appointment.patient_id)
+  end
 
   # POST /locations or /locations.json
   def create
+    patient = Patient.find(params[:patient_id])
+    patient.locations.where(home: true).each(&:delete) if params[:location].key?(:home) && params[:location][:home]
+
     @location = if params[:patient_id]
-                  Patient.find(params[:patient_id]).locations.new(location_params)
+                  patient.locations.new(location_params)
                 else
                   Location.new(location_params)
                 end
     respond_to do |format|
       if @location.save
-        format.html { redirect_to root_url, notice: 'location was successfully created.' }
+        flash[:info] = 'Location was successfully saved!'
+        format.html { redirect_to root_url }
         format.json { render :show, status: :created, location: @location }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -46,9 +53,21 @@ class LocationsController < ApplicationController
 
   # PATCH/PUT /locations/1 or /locations/1.json
   def update
+    if params[:appt_id]
+      appointment = Appointment.find(params[:appt_id])
+      @location = appointment.locations.find(params[:id])
+      if params[:location][:name] == 'tmp'
+        patient = Patient.find(appointment.patient_id)
+        l = patient.locations.find(params['loc-select'])
+        l_params = { name: l.name, addr1: l.addr1, addr2: l.addr2, city: l.city, state: l.state, zip: l.zip, preset: l.preset }
+      else
+        l_params = location_params
+      end
+    end
     respond_to do |format|
-      if @location.update(location_params)
-        format.html { redirect_to @location, notice: 'location was successfully updated.' }
+      if @location.update(l_params)
+        flash[:info] = 'Update was successful!'
+        format.html { redirect_to root_url }
         format.json { render :show, status: :ok, location: @location }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -66,8 +85,6 @@ class LocationsController < ApplicationController
     end
   end
 
-  def password; end
-
   private
 
   # Use callbacks to share common setup or constraints between actions.
@@ -77,6 +94,8 @@ class LocationsController < ApplicationController
 
   # Only allow a list of trusted parameters through.
   def location_params
-    params.require(:location).permit(:addr1, :addr2, :city, :state, :zip, :name, :home)
+    params.require(:location).permit(
+      :addr1, :addr2, :city, :state, :zip, :name, :home, :preset
+    )
   end
 end

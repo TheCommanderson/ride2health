@@ -11,7 +11,7 @@ class User
   field :email, type: String
   field :password_digest, type: String
 
-  validates_presence_of :first_name, :last_name, :phone, :email, :password
+  # validates :first_name, :last_name, :phone, :email, :password, presence: true
   validates_uniqueness_of :email, :phone
   # validates_length_of :phone, is: 10
 

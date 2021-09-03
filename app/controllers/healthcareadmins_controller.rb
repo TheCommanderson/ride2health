@@ -2,7 +2,7 @@
 
 class HealthcareadminsController < UsersController
   skip_before_action :authorized, only: %i[create new]
-  before_action :set_healthcareadmin, only: %i[show edit update destroy]
+  before_action :set_healthcareadmin, only: %i[show edit update destroy approve]
 
   # GET /healthcareadmins or /healthcareadmins.json
   def index
@@ -27,7 +27,7 @@ class HealthcareadminsController < UsersController
     respond_to do |format|
       begin
         if @healthcareadmin.save
-          format.html { redirect_to @healthcareadmin, notice: 'healthcareadmin was successfully created.' }
+          format.html { redirect_to @healthcareadmin }
           format.json { render :show, status: :created, location: @healthcareadmin }
         else
           format.html { render :new, status: :unprocessable_entity }
@@ -57,7 +57,8 @@ class HealthcareadminsController < UsersController
   def destroy
     @healthcareadmin.destroy
     respond_to do |format|
-      format.html { redirect_to healthcareadmins_url, notice: 'healthcareadmin was successfully destroyed.' }
+      flash[:danger] = 'Healthcare administrator was successfully deleted.'
+      format.html { redirect_to root_url }
       format.json { head :no_content }
     end
   end
@@ -71,6 +72,8 @@ class HealthcareadminsController < UsersController
 
   # Only allow a list of trusted parameters through.
   def healthcareadmin_params
-    params.require(:healthcareadmin).permit(:first_name, :middle_init, :last_name, :phone, :email, :password, :host_org)
+    params.require(:healthcareadmin).permit(
+      :first_name, :middle_init, :last_name, :phone, :email, :password, :host_org
+    )
   end
 end

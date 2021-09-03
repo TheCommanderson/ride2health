@@ -4,9 +4,8 @@ Rails.application.routes.draw do
   root to: 'sessions#index'
 
   # KEEP SORTED #
-  resources :admins
   resources :appointments do
-    resources :locations, only: %i[edit]
+    resources :locations, only: %i[edit update]
   end
   resources :drivers do
     member do
@@ -29,11 +28,28 @@ Rails.application.routes.draw do
       delete 'logout'
     end
   end
+  resources :sysadmins do
+    collection do
+      get 'vsearch'
+      get 'hsearch'
+      get 'psearch'
+      get 'dsearch'
+    end
+    member do
+      patch 'host'
+      delete 'unhost'
+    end
+  end
   resources :users, only: %i[show edit] do
     member do
       get 'password'
+      patch 'reset'
       patch 'submit'
     end
   end
-  resources :volunteers
+  resources :volunteers do
+    member do
+      post 'approve'
+    end
+  end
 end

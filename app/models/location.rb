@@ -17,6 +17,8 @@ class Location
   field :coordinates, type: Array
   # This field is only used when the location belongs to a patient
   field :home, type: Boolean, default: false
+  # This field is only used when the location is on the approved list of presets
+  field :preset, type: Boolean, default: false
 
   validates_presence_of :addr1, :city, :state
   validates_length_of :zip, minimum: 5, maximum: 5

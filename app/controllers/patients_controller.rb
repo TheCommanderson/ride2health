@@ -68,7 +68,7 @@ class PatientsController < UsersController
   def destroy
     @patient.destroy
     respond_to do |format|
-      format.html { redirect_to patients_url, notice: 'Patient was successfully deleted.' }
+      format.html { redirect_to root_url, notice: 'Patient was successfully deleted.' }
       format.json { head :no_content }
     end
   end
@@ -80,7 +80,7 @@ class PatientsController < UsersController
     elsif !@patient.approved && @patient.unset(:healthcareadmin)
       flash[:info] = 'Patient unapproved successfully.'
     else
-      flash[:danger] = 'There was an error unapproving this patient, please try again.'
+      flash[:danger] = 'There was an error (un)approving this patient, please try again.'
     end
     redirect_to root_url
   end
@@ -98,6 +98,8 @@ class PatientsController < UsersController
 
   # Only allow a list of trusted parameters through.
   def patient_params
-    params.require(:patient).permit(:first_name, :middle_init, :last_name, :phone, :email, :password)
+    params.require(:patient).permit(
+      :first_name, :middle_init, :last_name, :phone, :email, :password
+    )
   end
 end

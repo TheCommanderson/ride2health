@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Comment
   include Mongoid::Document
 
@@ -6,7 +8,7 @@ class Comment
   field :text, type: String
   # If this field is true, the comment was created through the 'Report Issue'
   # button
-  field :is_report, type: Boolean
+  field :is_report, type: Boolean, default: false
 
   # Comments can belong to a patient in the case that a driver/volunteer/admin
   # is making a comment about the patient.

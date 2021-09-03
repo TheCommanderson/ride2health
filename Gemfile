@@ -31,7 +31,7 @@ gem 'bootsnap', '>= 1.4.4', require: false
 
 # Mongoid and associated gems
 gem 'enumerize', '~> 2.4.0'
-gem 'mongoid', '~> 7.0.5'
+gem 'mongoid', '~> 7.3'
 # Do stuff later
 gem 'activejob', '~> 6.1.4'
 gem 'whenever', '~> 1.0'

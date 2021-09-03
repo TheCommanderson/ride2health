@@ -9,13 +9,6 @@
   </li>
 <% end %>
 
-<div class="container">
-  <h1>
-    Welcome,
-    <%= current_user.first_name %>
-  </h1>
-</div>
-
 <div class="container table-container table-responsive">
   <h3>
     Drivers
@@ -24,7 +17,7 @@
     <thead class="table-blue">
       <tr>
         <th scope="col">Driver</th>
-        <th scope="col">Approval Info</th>
+        <th scope="col">Approved By</th>
         <th scope="col">Trained?</th>
       </tr>
     </thead>
@@ -109,14 +102,14 @@
           </td>
           <td>
             <div class="row pb-2">
-              <%= button_to "Reset Password", password_user_path(patient.id), method: :post, data: { confirm: "Are you sure?" }, class: "btn btn-outline-dark" %>
+              <%= button_to "Reset Password", reset_user_path(patient.id), method: 'patch', data: { confirm: "Are you sure?" }, class: "btn btn-outline-dark" %>
             </div>
             <div class="row pb-2">
-              <%= button_to 'Comments', comment_patient_path(patient.id), method: :get, class: "btn btn-outline-dark sm-btn" %>
+              <%= button_to 'Comments', patient_comments_path(patient.id), method: :get, class: "btn btn-outline-dark" %>
             </div>
             <div class="row">
               <% if patient.approved %>
-                <%= link_to 'Create New Ride', {action: :new, controller: :appointments, patient_id: patient.id}, method: :get,class: "btn btn-outline-dark" %>
+                <%= button_to 'Create New Ride', {action: :new, controller: :appointments, patient_id: patient.id}, method: :get,class: "btn btn-outline-dark" %>
               <% end %>
             </div>
           </td>

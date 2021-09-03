@@ -2,7 +2,7 @@
 
 class VolunteersController < UsersController
   skip_before_action :authorized, only: %i[create new]
-  before_action :set_volunteer, only: %i[show edit update destroy]
+  before_action :set_volunteer, only: %i[show edit update destroy approve]
 
   # GET /volunteers or /volunteers.json
   def index
@@ -63,6 +63,18 @@ class VolunteersController < UsersController
     end
   end
 
+  def approve
+    @volunteer.update_attribute(:approved, !@volunteer.approved)
+    if @volunteer.approved && @volunteer.update_attribute(:sysadmin, current_user)
+      flash[:info] = 'Approved!'
+    elsif !@volunteer.approved && @volunteer.unset(:sysadmin)
+      flash[:info] = 'Volunteer unapproved successfully.'
+    else
+      flash[:danger] = 'There was an error (un)approving this volunteer, please try again.'
+    end
+    redirect_to root_url
+  end
+
   private
 
   # Use callbacks to share common setup or constraints between actions.
@@ -72,6 +84,8 @@ class VolunteersController < UsersController
 
   # Only allow a list of trusted parameters through.
   def volunteer_params
-    params.require(:volunteer).permit(:first_name, :middle_init, :last_name, :phone, :email, :password, :password_confirmation)
+    params.require(:volunteer).permit(
+      :first_name, :middle_init, :last_name, :phone, :email, :password, :password_confirmation
+    )
   end
 end

@@ -2,7 +2,6 @@
 
 class Sysadmin < User
   include Mongoid::Document
-  include ActiveModel::SecurePassword
 
   # System admins will have a list of host orgs that they have approved to be
   # part of the program.
