@@ -10,6 +10,7 @@ Rails.application.routes.draw do
   resources :drivers do
     member do
       post 'approve'
+      post 'assign'
     end
   end
   resources :healthcareadmins

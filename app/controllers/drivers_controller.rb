@@ -2,11 +2,13 @@
 
 class DriversController < UsersController
   skip_before_action :authorized, only: %i[create new]
-  before_action :set_driver, only: %i[show edit update destroy approve]
+  before_action :set_driver, only: %i[show edit update destroy approve assign]
 
   # GET /drivers or /drivers.json
   def index
-    @drivers = Driver.all
+    @driver = current_user
+    @appointments = Appointment.where(status: :unassigned)
+    @driver_appointments = Appointment.where(driver_id: current_user.id)
   end
 
   # GET /drivers/1 or /drivers/1.json
@@ -70,6 +72,28 @@ class DriversController < UsersController
       flash[:info] = 'Driver unapproved successfully.'
     else
       flash[:danger] = 'There was an error (un)approving this driver, please try again.'
+    end
+    redirect_to root_url
+  end
+
+  def assign
+    appointment = Appointment.find(params[:appointment_id])
+    if appointment.status.unassigned?
+      if appointment.update({ status: :assigned, driver_id: params[:id] })
+        flash[:info] = 'Ride was successfully assigned!'
+      else
+        flash[:danger] = "Oops, that ride couldn't be assigned."
+      end
+    else
+      if appointment.has_attribute?(:driver_id)
+        if appointment.update({ status: :unassigned }) && appointment.unset(:driver_id)
+          flash[:info] = 'Ride was unassigned.'
+        else
+          flash[:danger] = "Oops, that ride couldn't be unassigned."
+        end
+      else
+        flash[:danger] = 'This appointment is already unassigned.'
+      end
     end
     redirect_to root_url
   end
