@@ -8,7 +8,7 @@ Rails.application.routes.draw do
     resources :locations, only: %i[edit update]
   end
   resources :drivers do
-    resources :schedules, only: %i[index show edit]
+    resources :schedules, only: %i[index show edit update]
     member do
       post 'approve'
       post 'assign'
@@ -42,7 +42,7 @@ Rails.application.routes.draw do
       delete 'unhost'
     end
   end
-  resources :users, only: %i[show edit] do
+  resources :users, only: %i[show edit update] do
     member do
       get 'password'
       patch 'reset'

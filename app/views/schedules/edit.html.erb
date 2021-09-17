@@ -43,6 +43,7 @@
       <% end %>
     </tbody>
   </table>
+  <%= hidden_field_tag(:d_id, params[:driver_id]) %>
   <div class="text-center py-4">
     <%= form.submit "Submit",class:"btn btn-outline-dark btn-lg" %>
   </div>

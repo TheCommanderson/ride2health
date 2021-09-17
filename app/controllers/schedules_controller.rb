@@ -2,7 +2,7 @@
 
 class SchedulesController < ApplicationController
   skip_before_action :authorized, only: %i[create new]
-  before_action :set_schedule, only: %i[show edit update destroy]
+  before_action :set_schedule, only: %i[show edit destroy]
 
   # GET /schedules or /schedules.json
   def index
@@ -48,9 +48,29 @@ class SchedulesController < ApplicationController
 
   # PATCH/PUT /schedules/1 or /schedules/1.json
   def update
+    params[:driver_id] = params[:d_id]
+    @schedule = Driver.find(params[:driver_id]).schedules.find(params[:id])
+    flash[:notice] = ''
+    new_sch = {}
+    days = %w[Monday Tuesday Wednesday Thursday Friday Saturday Sunday]
+    days.each do |day|
+      day1 = (params[:schedule][day + '1(4i)']).to_s + (params[:schedule][day + '1(5i)']).to_s
+      day2 = (params[:schedule][day + '2(4i)']).to_s + (params[:schedule][day + '2(5i)']).to_s
+      if day1.to_i > day2.to_i
+        flash[:info] += day + ' was not updated, invalid time given.  '
+        next
+      end
+      new_sch[day] = day1 + ' ' + day2
+    end
+
     respond_to do |format|
-      if @schedule.update(schedule_params)
-        format.html { redirect_to @schedule, notice: 'schedule was successfully updated.' }
+      if @schedule.update(new_sch)
+        if flash[:info]
+          flash[:info] += 'Schedule updated.'
+        else
+          flash[:info] = 'Schedule updated.'
+        end
+        format.html { redirect_to driver_schedules_path(current_user) }
         format.json { render :show, status: :ok, location: @schedule }
       else
         format.html { render :edit, status: :unprocessable_entity }
