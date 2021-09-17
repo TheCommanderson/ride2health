@@ -76,15 +76,15 @@
           </div>
           <div class="form-group col-md">
             <%= form.label :car_license_plate %>
-            <%= form.text_field :car_license_plate, class: "form-control", placeholder: "xxx xxx" %>
+            <%= form.text_field :car_license_plate, class: "form-control license-plate-form", placeholder: "xxx xxx" %>
           </div>
 
           <div class="text-center py-4">
-            <%= form.submit "Submit",class:"btn btn-outline-light big-btn" %>
+            <%= form.submit "Submit",class:"btn btn-outline-light" %>
           </div>
         <% end %>
         <div class="text-center pb-3">
-          <%= button_to 'Back', involved_sessions_path, method: 'get', class: "btn btn-light big-btn" %>
+          <%= button_to 'Back', involved_sessions_path, method: 'get', class: "btn btn-light" %>
         </div>
       </div>
     </section>

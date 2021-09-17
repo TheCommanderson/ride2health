@@ -58,7 +58,7 @@ class VolunteersController < UsersController
   def destroy
     @volunteer.destroy
     respond_to do |format|
-      format.html { redirect_to volunteers_url, notice: 'volunteer was successfully destroyed.' }
+      format.html { redirect_to root_url, notice: 'volunteer was successfully destroyed.' }
       format.json { head :no_content }
     end
   end

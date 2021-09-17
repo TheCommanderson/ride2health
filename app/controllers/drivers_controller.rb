@@ -43,10 +43,13 @@ class DriversController < UsersController
   end
 
   # PATCH/PUT /drivers/1 or /drivers/1.json
+  # This function is only used to update car information, user info is edited
+  # using the users_controller.rb
   def update
     respond_to do |format|
       if @driver.update(driver_params)
-        format.html { redirect_to @driver, notice: 'driver was successfully updated.' }
+        flash[:info] = 'Car info was successfully updated!'
+        format.html { redirect_to @driver }
         format.json { render :show, status: :ok, location: @driver }
       else
         format.html { render :edit, status: :unprocessable_entity }

@@ -2,7 +2,7 @@
 
 <% content_for :navbar do %>
   <li class="nav-item mx-2 mt-1">
-    <%= button_to 'Edit My Schedule', driver_path(current_user), method: "get", class:"btn btn-outline-light" %>
+    <%= button_to 'My Schedule', driver_schedules_path(current_user), method: "get", class:"btn btn-outline-light" %>
   </li>
   <li class="nav-item mx-2 mt-1">
     <%= button_to 'My Profile', driver_path(current_user), method: "get", class:"btn btn-outline-light" %>

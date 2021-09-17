@@ -1,0 +1,86 @@
+<%= stylesheet_pack_tag 'styles/user', media: 'all', 'data-turbolinks-track': 'reload' %>
+
+<% content_for :navbar do %>
+  <li class="nav-item mx-2 mt-1">
+    <%= button_to 'My Schedule', driver_schedules_path(current_user), method: "get", class:"btn btn-outline-light", disabled: true %>
+  </li>
+  <li class="nav-item mx-2 mt-1">
+    <%= button_to 'My Profile', driver_path(current_user), method: "get", class:"btn btn-outline-light" %>
+  </li>
+  <li class="nav-item mx-2 mt-1">
+    <%= button_to 'Logout', logout_sessions_path, method: "delete", class:"btn btn-outline-light" %>
+  </li>
+<% end %>
+<div class="container table-container table-responsive pt-3 text-center">
+  <h3>
+    Current Schedule
+  </h3>
+  <table class="table table-bordered border-dark">
+    <thead class="table-blue">
+      <tr>
+        <th>Actions</th>
+        <th>Monday</th>
+        <th>Tuesday</th>
+        <th>Wednesday</th>
+        <th>Thursday</th>
+        <th>Friday</th>
+        <th>Saturday</th>
+        <th>Sunday</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% @schedules.each do |s| %>
+        <tr>
+          <td>
+            <%= button_to 'Edit', edit_driver_schedule_path(current_user, s[:id]), method: "get", class:"btn btn-outline-dark" %>
+          </td>
+          <td>
+            <%= s[:days]['Monday'] %>
+            <div>
+              <%= s[:sch]['Monday'] %>
+            </div>
+          </td>
+          <td>
+            <%= s[:days]['Tuesday'] %>
+            <div>
+              <%= s[:sch]['Tuesday'] %>
+            </div>
+          </td>
+          <td>
+            <%= s[:days]['Wednesday'] %>
+            <div>
+              <%= s[:sch]['Wednesday'] %>
+            </div>
+          </td>
+          <td>
+            <%= s[:days]['Thursday'] %>
+            <div>
+              <%= s[:sch]['Thursday'] %>
+            </div>
+          </td>
+          <td>
+            <%= s[:days]['Friday'] %>
+            <div>
+              <%= s[:sch]['Friday'] %>
+            </div>
+          </td>
+          <td>
+            <%= s[:days]['Saturday'] %>
+            <div>
+              <%= s[:sch]['Saturday'] %>
+            </div>
+          </td>
+          <td>
+            <%= s[:days]['Sunday'] %>
+            <div>
+              <%= s[:sch]['Sunday'] %>
+            </div>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+<div class="row text-center">
+  <%= button_to 'Back', root_url, method: "get", class:"btn btn-outline-dark btn-lg" %>

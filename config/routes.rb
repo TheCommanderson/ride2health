@@ -8,6 +8,7 @@ Rails.application.routes.draw do
     resources :locations, only: %i[edit update]
   end
   resources :drivers do
+    resources :schedules, only: %i[index show edit]
     member do
       post 'approve'
       post 'assign'
