@@ -4,6 +4,8 @@ class CommentsController < ApplicationController
   def index
     @comments = if params.key?(:patient_id)
                   Comment.where(patient_id: params[:patient_id])
+                elsif params.key?(:appointment_id)
+                  Comment.where(appointment_id: params[:appointment_id])
                 else
                   Comment.all
                 end
@@ -13,6 +15,7 @@ class CommentsController < ApplicationController
   def new
     @comment = Comment.new
     @patient = Patient.find(params[:patient_id]) if params.key?(:patient_id)
+    @appointment = Appointment.find(params[:appointment_id]) if params.key?(:appointment_id)
   end
 
   # POST /comments

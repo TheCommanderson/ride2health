@@ -28,14 +28,7 @@ class SessionsController < ApplicationController
 
   # POST /sessions.json
   def create
-    type = params[:login_type]
-
-    case type
-    when 'p'
-      user = User.where(email: params[:email], _type: 'Patient').first
-    when 'v'
-      user = User.where(email: params[:email]).ne(_type: 'Patient').first
-    end
+    user = User.where(email: params[:email]).first
     if user.present? && user.authenticate(params[:password])
       # sets up user.id sessions
       session[:user_id] = user.id

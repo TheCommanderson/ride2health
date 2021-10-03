@@ -6,6 +6,8 @@ Rails.application.routes.draw do
   # KEEP SORTED #
   resources :appointments do
     resources :locations, only: %i[edit update]
+    member do
+      post 'assign'
   end
   resources :drivers do
     resources :schedules, only: %i[index show edit update]
@@ -45,6 +47,7 @@ Rails.application.routes.draw do
   resources :users, only: %i[show edit update] do
     member do
       get 'password'
+      get 'availability'
       patch 'reset'
       patch 'submit'
     end

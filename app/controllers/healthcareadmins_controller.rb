@@ -6,7 +6,7 @@ class HealthcareadminsController < UsersController
 
   # GET /healthcareadmins or /healthcareadmins.json
   def index
-    @patients = Patient.where(host_org: current_user.host_org).sort_by(&:approved).sort_by(&:first_name)
+    @patients = Patient.where(host_org: current_user.host_org).sort_by { |p| p.approved ? 0 : 1 }.sort_by(&:first_name)
   end
 
   # GET /healthcareadmins/1 or /healthcareadmins/1.json

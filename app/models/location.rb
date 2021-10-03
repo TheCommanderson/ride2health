@@ -28,14 +28,16 @@ class Location
   embedded_in :Patient
 
   # Callbacks
-  before_save :generate_full_address
+  before_create :generate_full_address
 
   protected
 
   def generate_full_address
-    # temp_address = "#{addr1} #{addr2}, #{city}, #{state} #{zip}"
-    # result = Geocoder.search(temp_address)
-    # self.coordinates = result.first.coordinates
-    # self.address = result.first.address
+    addr = "#{addr1} #{addr2}, #{city}, #{state} #{zip}"
+    result = Geocoder.search(addr)
+    logger.debug "The address is: #{addr}"
+    logger.debug "The result is: #{result}"
+    self.coordinates = result.first.coordinates
+    self.address = result.first.address
   end
 end

@@ -21,7 +21,7 @@
 
       <tbody>
         <% @appointments.each do |a| %>
-          <% if Time.parse(appointment.datetime).past? %>
+          <% if Time.parse(a.datetime).past? %>
             <% next %><% end %>
             <tr>
               <td>
@@ -43,30 +43,30 @@
               </td>
               <td>
                 <div class="row">
-                  <%= appointment.location[0].name %>
+                  <%= a.locations[0].name %>
                 </div>
                 <div class="row">
-                  <%= appointment.location[0].addr1 %>
+                  <%= a.locations[0].addr1 %>
                 </div>
                 <div class="row">
-                  <%= appointment.location[0].addr2 %>
+                  <%= a.locations[0].addr2 %>
                 </div>
                 <div class="row">
-                  <%= "#{appointment.location[0].city}, #{appointment.location[0].state}, #{appointment.location[0].zip}" %>
+                  <%= "#{a.locations[0].city}, #{a.locations[0].state}, #{a.locations[0].zip}" %>
                 </div>
               </td>
               <td>
                 <div class="row">
-                  <%= appointment.location[1].name %>
+                  <%= a.locations[1].name %>
                 </div>
                 <div class="row">
-                  <%= appointment.location[1].addr1 %>
+                  <%= a.locations[1].addr1 %>
                 </div>
                 <div class="row">
-                  <%= appointment.location[1].addr2 %>
+                  <%= a.locations[1].addr2 %>
                 </div>
                 <div class="row">
-                  <%= "#{appointment.location[1].city}, #{appointment.location[1].state}, #{appointment.location[1].zip}" %>
+                  <%= "#{a.locations[1].city}, #{a.locations[1].state}, #{a.locations[1].zip}" %>
                 </div>
               </td>
             </tr>
@@ -74,3 +74,6 @@
         </tbody>
       </table>
     <% end %>
+    <div class="text-center pb-3">
+      <%= button_to 'Back', request.headers['HTTP_REFERER'], method: 'get', class: "btn btn-outline-dark btn-lg" %>
+    </div>

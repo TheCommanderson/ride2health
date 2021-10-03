@@ -33,6 +33,9 @@
       </tbody>
     </table>
   </div>
-  <div class="text-center">
+  <div class="text-center row">
     <%= button_to 'New Comment', new_patient_comment_path(params[:patient_id]), method: :get, class: "btn btn-outline-dark btn-xlarge wonder-btn" %>
+  </div>
+  <div class="text-center py-3">
+    <%= button_to 'Back', request.headers['HTTP_REFERER'], method: 'get', class: "btn btn-outline-dark btn-lg" %>
   </div>

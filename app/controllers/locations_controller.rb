@@ -18,8 +18,12 @@ class LocationsController < ApplicationController
 
   # GET /locations/new
   def new
-    @location = Location.new
     @patient = Patient.find(params[:patient_id])
+    @location = if params[:patient_id]
+                  @patient.locations.new
+                else
+                  Location.new
+                end
   end
 
   # GET /locations/1/edit

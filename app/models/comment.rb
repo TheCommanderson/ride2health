@@ -11,6 +11,8 @@ class Comment
   field :is_report, type: Boolean, default: false
 
   # Comments can belong to a patient in the case that a driver/volunteer/admin
-  # is making a comment about the patient.
+  # is making a comment about the patient.  Comments can belong to appointments
+  # when they are reports.
   belongs_to :patient, optional: true
+  belongs_to :appointment, optional: true
 end
