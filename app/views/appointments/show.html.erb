@@ -16,13 +16,13 @@
     <div class="container table-container table-responsive pt-3">
       <table class="table">
         <tr>
-          <th class="table-blue">Patient</th>
+          <th>Patient</th>
           <td>
             <%= "#{@patient.first_name} #{@patient.last_name}" %>
           </td>
         </tr>
         <tr>
-          <th class="table-yellow">Driver</th>
+          <th>Driver</th>
           <td>
             <% if @appointment.status.unassigned? %>
               <span style="color:red">Unassigned</span>
@@ -33,7 +33,7 @@
             </td>
           </tr>
           <tr>
-            <th class="table-red">Pickup Date & Time</th>
+            <th>Pickup Date & Time</th>
             <td>
               <div class="container">
                 <div class="row">
@@ -63,7 +63,7 @@
             </td>
           </tr>
           <tr>
-            <th class="table-yellow">Destination Address</th>
+            <th>Destination Address</th>
             <td>
               <div class="row">
                 <%= @appointment.locations[1].name %>

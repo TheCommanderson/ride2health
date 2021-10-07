@@ -7,7 +7,8 @@ Rails.application.routes.draw do
   resources :appointments do
     resources :locations, only: %i[edit update]
     member do
-      post 'assign'
+      get 'assign'
+    end
   end
   resources :drivers do
     resources :schedules, only: %i[index show edit update]

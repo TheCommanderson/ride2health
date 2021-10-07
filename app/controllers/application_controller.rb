@@ -10,6 +10,7 @@ class ApplicationController < ActionController::Base
   helper_method :all_host_orgs
   helper_method :dt_format
   helper_method :user_type
+  helper_method :has_conflict
 
   before_action :authorized
 
@@ -76,5 +77,37 @@ class ApplicationController < ActionController::Base
 
   def all_host_orgs
     Admin.all.map(&:host_orgs).compact.flatten.uniq
+  end
+
+  # returns false if conflict exists, else returns true
+  def has_conflict(appt, dr)
+    @driver_apps = Appointment.where(driver_id: dr)
+    @driver_apps.each do |conflict|
+      @debug_log.append('checking conflict with appt at ' + conflict.datetime)
+
+      # Check if the date is the same
+      appt_date = DateTime.strptime(appt.datetime, dt_format).strftime('%d%m%Y')
+      conflict_date = DateTime.strptime(conflict.datetime, dt_format).strftime('%d%m%Y')
+      if appt_date != conflict_date
+        @debug_log.append('conflict is on a different day')
+        next
+      end
+
+      # Check if there are conflicts with other appointments
+      conflict_start_time = DateTime.strptime(conflict.datetime, dt_format).to_time.strftime('%H%M').to_i
+      conflict_end_time = (DateTime.strptime(conflict.datetime, dt_format).to_time + conflict.est_time.minutes).strftime('%H%M').to_i
+      if sign(start_time - conflict_start_time) != sign(start_time - conflict_end_time) # appt starts in the middle of conlficting appt
+        @debug_log.append('appt starts in the middle of conflict')
+        return false
+      elsif sign(end_time - conflict_start_time) != sign(end_time - conflict_end_time) # appt ends in the middle of conflicting appt
+        @debug_log.append('appt ends in the middle of conflict')
+        return false
+      elsif start_time <= conflict_start_time && end_time >= conflict_end_time # conflict is contained completely inside appt
+        @debug_log.append('appt contains conflict')
+        return false
+        # NOTE: if appt is contained completely in the conflict then it will execute the first if statement
+      end
+    end
+    true
   end
 end

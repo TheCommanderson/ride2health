@@ -86,31 +86,38 @@
           <%= f.hidden_field :name, :value => 'tmp' %>
         <% end %>
         <div class="container table-container table-responsive">
-          <table class="table">
-            <thead class="table-yellow">
-              <th class="text-dark"></th>
-              <th class="text-dark">Name</th>
-              <th class="text-dark">Address</th>
-            </thead>
-            <tbody>
-              <% @locations.each do |l| %>
-                <tr>
-                  <td><input type='radio' name='loc-select-to' class='loc-select-to' value=<%= l.id.to_s %>></td>
-                  <td><%= l.name %></td>
-                  <td>
-                    <div class="container">
-                      <div class="row">
-                        <%= "#{l.addr1} #{l.addr2}" %>
+          <% if @locations.any? %>
+
+            <table class="table">
+              <thead class="table-yellow">
+                <th class="text-dark"></th>
+                <th class="text-dark">Name</th>
+                <th class="text-dark">Address</th>
+              </thead>
+              <tbody>
+                <% @locations.each do |l| %>
+                  <tr>
+                    <td><input type='radio' name='loc-select-to' class='loc-select-to' value=<%= l.id.to_s %>></td>
+                    <td><%= l.name %></td>
+                    <td>
+                      <div class="container">
+                        <div class="row">
+                          <%= "#{l.addr1} #{l.addr2}" %>
+                        </div>
+                        <div class="row">
+                          <%= "#{l.city} #{l.state} #{l.zip}" %>
+                        </div>
                       </div>
-                      <div class="row">
-                        <%= "#{l.city} #{l.state} #{l.zip}" %>
-                      </div>
-                    </div>
-                  </td>
-                </tr>
-              <% end %>
-            </tbody>
-          </table>
+                    </td>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+          <% else %>
+            <h2 class="text-center">
+              Looks like there are no approved locations yet!
+            </h2>
+          <% end %>
         </div>
       </div>
     </div>
@@ -151,31 +158,37 @@
       <%= f.hidden_field :name, :value => 'tmp' %>
     <% end %>
     <div class="container table-container table-responsive">
-      <table class="table">
-        <thead class="table-yellow">
-          <th class="text-dark"></th>
-          <th class="text-dark">Name</th>
-          <th class="text-dark">Address</th>
-        </thead>
-        <tbody>
-          <% @locations.each do |l| %>
-            <tr>
-              <td><input type='radio' name='loc-select-from' class='loc-select-from' value=<%= l.id.to_s %>></td>
-              <td><%= l.name %></td>
-              <td>
-                <div class="container">
-                  <div class="row">
-                    <%= "#{l.addr1} #{l.addr2}" %>
+      <% if @locations.any? %>
+        <table class="table">
+          <thead class="table-yellow">
+            <th class="text-dark"></th>
+            <th class="text-dark">Name</th>
+            <th class="text-dark">Address</th>
+          </thead>
+          <tbody>
+            <% @locations.each do |l| %>
+              <tr>
+                <td><input type='radio' name='loc-select-from' class='loc-select-from' value=<%= l.id.to_s %>></td>
+                <td><%= l.name %></td>
+                <td>
+                  <div class="container">
+                    <div class="row">
+                      <%= "#{l.addr1} #{l.addr2}" %>
+                    </div>
+                    <div class="row">
+                      <%= "#{l.city} #{l.state} #{l.zip}" %>
+                    </div>
                   </div>
-                  <div class="row">
-                    <%= "#{l.city} #{l.state} #{l.zip}" %>
-                  </div>
-                </div>
-              </td>
-            </tr>
-          <% end %>
-        </tbody>
-      </table>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      <% else %>
+        <h2 class="text-center">
+          Looks like there are no approved locations yet!
+        </h2>
+      <% end %>
     </div>
   </div>
   <div class="col">

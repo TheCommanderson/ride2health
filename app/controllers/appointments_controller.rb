@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class AppointmentsController < ApplicationController
-  before_action :set_appointment, only: %i[show edit update destroy]
+  before_action :set_appointment, only: %i[show edit update destroy assign]
   def index; end
 
   # GET /appointments/1 or /appointments/1.json
@@ -75,6 +75,10 @@ class AppointmentsController < ApplicationController
       format.html { redirect_to root_url }
       format.json { head :no_content }
     end
+  end
+
+  def assign
+    @drivers = Driver.where(trained: true).select { |d| has_conflict(@appointment, d) }
   end
 
   private
