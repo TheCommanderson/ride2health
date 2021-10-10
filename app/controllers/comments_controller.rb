@@ -16,6 +16,13 @@ class CommentsController < ApplicationController
     @comment = Comment.new
     @patient = Patient.find(params[:patient_id]) if params.key?(:patient_id)
     @appointment = Appointment.find(params[:appointment_id]) if params.key?(:appointment_id)
+    raise TypeError, 'patient and appointment were somehow both provided' if !@patient.nil? && !@appointment.nil?
+
+    @comment_greeting = if @patient
+                          "New comment about #{@patient.first_name}"
+                        else
+                          'New report for appointment'
+                        end
   end
 
   # POST /comments
@@ -41,6 +48,8 @@ class CommentsController < ApplicationController
 
   # Only allow a list of trusted parameters through.
   def comment_params
-    params.require(:comment).permit(:text, :author, :is_report, :patient_id)
+    params.require(:comment).permit(
+      :text, :author, :is_report, :patient_id, :appointment_id
+    )
   end
 end

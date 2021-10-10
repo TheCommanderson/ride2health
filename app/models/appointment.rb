@@ -23,6 +23,9 @@ class Appointment
   belongs_to :driver, optional: true
   belongs_to :patient, optional: true
 
+  # Has
+  has_many :comments
+
   # Callbacks
   # before_save :get_est_time
   # before_update :get_est_time

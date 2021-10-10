@@ -79,10 +79,46 @@
               </div>
             </td>
           </tr>
-        </table>
+        </table>confirm
       </div>
-      <div class="text-center pb-2">
-        <%= button_to 'Back', root_url, method: 'get', class: "btn btn-outline-light btn-lg" %>
+      <div class="text-center">
+        <div class="row md-2 pb-2">
+          <%= button_to 'See in Google Maps', "https://#{build_gmap_url(@appointment.locations[0], @appointment.locations[1])}", method: 'get', class: "btn btn-success btn-lg" %>
+        </div>
+      </div>
+
+      <% if !@appointment.comments.empty? %>
+        <div>
+          <h2 class="text-danger">This appointment has been reported:</h2>
+          <div class="container table-container table-responsive pt-3">
+            <table class="table">
+              <thead>
+                <th>Report</th>
+                <th>Reporter</th>
+              </thead>
+              <tbody>
+                <% @appointment.comments.each do |report| %>
+                  <tr>
+                    <td>
+                      <%= "#{report.text}" %>
+                    </td>
+                    <td>
+                      <%= "#{User.find(report.author).full_name}" %>
+                    </td>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      <% end %>
+      <div class="text-center">
+        <div class="row md-2 pb-2">
+          <%= button_to 'Report Issue', new_appointment_comment_path(@appointment.id), method: 'get', class: "btn btn-danger btn-lg" %>
+        </div>
+        <div class="row md-2 pb-2">
+          <%= button_to 'Back', root_url, method: 'get', class: "btn btn-outline-light btn-lg" %>
+        </div>
       </div>
       <div id="map"></div>
       <div id="right-panel"></div>

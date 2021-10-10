@@ -6,6 +6,7 @@ Rails.application.routes.draw do
   # KEEP SORTED #
   resources :appointments do
     resources :locations, only: %i[edit update]
+    resources :comments
     member do
       get 'assign'
     end

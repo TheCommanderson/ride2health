@@ -16,4 +16,8 @@ class User
   # validates_length_of :phone, is: 10
 
   has_secure_password
+
+  def full_name
+    "#{first_name} #{middle_init} #{last_name}"
+  end
 end
