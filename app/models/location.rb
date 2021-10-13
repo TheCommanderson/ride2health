@@ -37,7 +37,11 @@ class Location
     result = Geocoder.search(addr)
     logger.debug "The address is: #{addr}"
     logger.debug "The result is: #{result}"
-    self.coordinates = result.first.coordinates
-    self.address = result.first.address
+    if result.first.nil?
+      logger.warn('Geocoder returned nothing')
+    else
+      self.coordinates = result.first.coordinates
+      self.address = result.first.address
+    end
   end
 end

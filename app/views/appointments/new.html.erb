@@ -98,13 +98,13 @@
                 <% @locations.each do |l| %>
                   <tr>
                     <td><input type='radio' name='loc-select-to' class='loc-select-to' value=<%= l.id.to_s %>></td>
-                    <td><%= l.name %></td>
+                    <td class="text-light"><%= l.name %></td>
                     <td>
                       <div class="container">
-                        <div class="row">
+                        <div class="row text-light">
                           <%= "#{l.addr1} #{l.addr2}" %>
                         </div>
-                        <div class="row">
+                        <div class="row text-light">
                           <%= "#{l.city} #{l.state} #{l.zip}" %>
                         </div>
                       </div>
@@ -169,9 +169,9 @@
             <% @locations.each do |l| %>
               <tr>
                 <td><input type='radio' name='loc-select-from' class='loc-select-from' value=<%= l.id.to_s %>></td>
-                <td><%= l.name %></td>
+                <td class="text-light"><%= l.name %></td>
                 <td>
-                  <div class="container">
+                  <div class="container text-light">
                     <div class="row">
                       <%= "#{l.addr1} #{l.addr2}" %>
                     </div>

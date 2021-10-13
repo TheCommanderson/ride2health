@@ -107,7 +107,13 @@ class ApplicationController < ActionController::Base
   end
 
   def build_gmap_url(_location_1, _location_2)
-    'www.google.com'
+    q = {
+      api: '1',
+      origin: _location_1.address,
+      destination: _location_2.address,
+      travelmode: 'driving'
+    }
+    URI::HTTPS.build(host: 'www.google.com', path: '/maps/dir/', query: q.to_query).to_s
   end
 
   # ===================== RESCUE =================== #
